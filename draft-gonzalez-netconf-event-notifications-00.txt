@@ -5,14 +5,14 @@
 NETCONF                                               A. Gonzalez Prieto
 Internet-Draft                                                  A. Clemm
 Intended status: Standards Track                                 E. Voit
-Expires: December 11, 2016                             E. Nilsen-Nygaard
+Expires: December 15, 2016                             E. Nilsen-Nygaard
                                                              A. Tripathy
                                                            Cisco Systems
                                                              S. Chisholm
                                                                    Ciena
                                                               H. Trevino
                                                            Cisco Systems
-                                                            June 9, 2016
+                                                           June 13, 2016
 
 
                 NETCONF Support for Event Notifications
@@ -20,12 +20,12 @@ Expires: December 11, 2016                             E. Nilsen-Nygaard
 
 Abstract
 
-   This document defines the support of "Event Notifications" by the
-   Network Configuration protocol (NETCONF).  "Event Notifications"
+   This document defines the support of [event-notifications] by the
+   Network Configuration protocol (NETCONF). [event-notifications]
    describes capabilities and operations for providing asynchronous
    message notification delivery.  This document discussed how to
    provide them on top of NETCONF.  The capabilities and operations
-   defined between this document and "Event Notifications" are intended
+   defined between this document and [event-notifications] are intended
    to obsolete RFC 5277.
 
 Status of This Memo
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 11, 2016.
+   This Internet-Draft will expire on December 15, 2016.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016               [Page 1]
+Gonzalez Prieto, et al. Expires December 15, 2016               [Page 1]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -86,9 +86,10 @@ Table of Contents
      2.10. Control Plane Notifications . . . . . . . . . . . . . . .  33
    3.  Backwards Compatibility . . . . . . . . . . . . . . . . . . .  43
    4.  Security Considerations . . . . . . . . . . . . . . . . . . .  44
-   5.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  45
-     5.1.  Normative References  . . . . . . . . . . . . . . . . . .  45
-     5.2.  Informative References  . . . . . . . . . . . . . . . . .  45
+   5.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  45
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  45
+     6.1.  Normative References  . . . . . . . . . . . . . . . . . .  45
+     6.2.  Informative References  . . . . . . . . . . . . . . . . .  45
    Appendix A.  Issues being worked and resolved . . . . . . . . . .  46
      A.1.  Unresolved Issues . . . . . . . . . . . . . . . . . . . .  46
      A.2.  Agreement in principal  . . . . . . . . . . . . . . . . .  46
@@ -108,8 +109,7 @@ Table of Contents
 
 
 
-
-Gonzalez Prieto, et al. Expires December 11, 2016               [Page 2]
+Gonzalez Prieto, et al. Expires December 15, 2016               [Page 2]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -128,7 +128,7 @@ Internet-Draft            NETCONF-notifications                June 2016
        +-------------+     +-----------------------------+       |
              |                           |                       |
        +-------------+     +-------------------------------------------+
-       |  Transport  |     |   BEEP, SSH, SSL, console                 |
+       |  Transport  |     |          BEEP, SSH, SSL, console          |
        |  Protocol   |     |                                           |
        +-------------+     +-------------------------------------------+
 
@@ -136,23 +136,23 @@ Internet-Draft            NETCONF-notifications                June 2016
 
    This document defines mechanisms that provide an asynchronous message
    notification delivery service for the NETCONF protocol [RFC6241]
-   based on "Event Notifications".  This is an optional capability built
+   based on [event-notifications].  This is an optional capability built
    on top of the base NETCONF definition.
 
-   "Event Notifications" and this document enhance the capabilities of
+   [event-notifications] and this document enhance the capabilities of
    RFC 5277 while maintaining backwards capability with existing
    implementations.  It is intended that a final version of this
-   document might obsolete RFC 5277 [RFC5277].
+   document might obsolete [RFC5277].
 
-   The enhancements over RFC 5277 [RFC5277] include the ability to
-   terminate subscriptions without terminating the client session, to
-   modify existing subscriptions, and to have multiple subscriptions on
-   a NETCONF session.
+   The enhancements over [RFC5277] include the ability to terminate
+   subscriptions without terminating the client session, to modify
+   existing subscriptions, and to have multiple subscriptions on a
+   NETCONF session.
 
-   These enhancements do not affect RFC 5277 [RFC5277] clients that do
-   not support these particular subscription requirements.
+   These enhancements do not affect [RFC5277] clients that do not
+   support these particular subscription requirements.
 
-   "Event notifications" covers the following functionality:
+   [event-notifications] covers the following functionality:
 
    o  Ability to subscribe to event notifications using two mechanisms:
       dynamic and configuration subscriptions.
@@ -165,7 +165,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016               [Page 3]
+Gonzalez Prieto, et al. Expires December 15, 2016               [Page 3]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -180,8 +180,8 @@ Internet-Draft            NETCONF-notifications                June 2016
    o  Ability to replay locally logged notifications.
 
    To support this functionality, NETCONF agents must implement the
-   operations, configuration and operational state defined in "Event
-   Notifications".  In addition, they need to:
+   operations, configuration and operational state defined in
+   [event-notifications].  In addition, they need to:
 
    o  support multiple subscriptions over a single NETCONF session.
 
@@ -197,7 +197,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 1.1.1.  Event Notifications
 
-   The following terms are defined in "Event Notifications":
+   The following terms are defined in [event-notifications]:
 
    o  Event
 
@@ -221,7 +221,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016               [Page 4]
+Gonzalez Prieto, et al. Expires December 15, 2016               [Page 4]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -242,25 +242,25 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 1.2.  Solution Overview
 
-   "Event Notifications" defines mechanisms that provide an asynchronous
+   [event-notifications] defines mechanisms that provide an asynchronous
    message notification delivery service.  This document discusses its
    realization on top of the NETCONF protocol [RFC6241].
 
-   The functionality to support is defined in "Event Notifications".  It
+   The functionality to support is defined in [event-notifications].  It
    is formalized in a set of yang models.  The mapping of yang
    constructs into NETCONF is described in [RFC6020].
 
-   Supporting "Event Notifications" requires enhancements and
+   Supporting [event-notifications] requires enhancements and
    modifications in NETCONF.  The key enhacement is suporting multiple
    subscriptions on a NETCONF session.  A key modification is the
    definition of the NETCONF stream
 
    These enhancements do not affect [RFC5277] clients that do not
-   support "Event Notifications".
+   support [event-notifications].
 
 2.  Solution
 
-   In this section, we describe and exemplify how "Event Notifications"
+   In this section, we describe and exemplify how [event-notifications]
    must be supported over NETCONF.
 
 2.1.  Event Streams
@@ -277,7 +277,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016               [Page 5]
+Gonzalez Prieto, et al. Expires December 15, 2016               [Page 5]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -291,13 +291,13 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 2.2.  Event Stream Discovery
 
-   Open Item: is this the way "Event notifications" will support stream
+   Open Item: is this the way [event-notifications] will support stream
    discovery
 
    A NETCONF client can retrieve the list of available event streams
    from a NETCONF server using the <get> operation.  The reply contains
-   the elements defined in the YANG model under the container /netconf/
-   streams, which includes the name and description of the streams.
+   the elements defined in the YANG model under the container "/netconf/
+   streams", which includes the name and description of the streams.
 
    The following example shows retrieving the list of available event
    stream list using the <get> operation.
@@ -333,7 +333,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016               [Page 6]
+Gonzalez Prieto, et al. Expires December 15, 2016               [Page 6]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -389,7 +389,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016               [Page 7]
+Gonzalez Prieto, et al. Expires December 15, 2016               [Page 7]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -401,8 +401,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 2.4.  Creating a Subscription
 
-   Open Item: Should this draft obsolete 5277 (and include create-
-   subscrition) or be in parallel with it?
+   The following illustrates the creation of a simple subscription.
 
 2.4.1.  Usage Example
 
@@ -445,7 +444,8 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016               [Page 8]
+
+Gonzalez Prieto, et al. Expires December 15, 2016               [Page 8]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -467,7 +467,7 @@ Internet-Draft            NETCONF-notifications                June 2016
    Error-info: <bad-element>: startTime
    Description: An expected element is missing.
 
-             Figure 6: Create Subscription Missing an Element
+             Figure 6: Create subscription missing an element
 
    If the optional replay feature is requested but the NETCONF server
    does not support it, the following error is returned:
@@ -480,7 +480,7 @@ Internet-Draft            NETCONF-notifications                June 2016
                 requested operation failed for some reason
                 not covered by any other error condition.
 
-              Figure 7: Create Subscription Operation Failed
+              Figure 7: Create subscription pperation failed
 
    If a stopTime is requested that is earlier than the specified
    startTime, the following error is returned:
@@ -492,7 +492,7 @@ Internet-Draft            NETCONF-notifications                June 2016
    Description: An element value is not correct;
                 e.g., wrong type, out of range, pattern mismatch.
 
-             Figure 8: Create Subscription Incorrect stopTime
+             Figure 8: Create subscription incorrect stopTime
 
    If a startTime is requested that is later than the current time, the
    following error is returned:
@@ -501,7 +501,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016               [Page 9]
+Gonzalez Prieto, et al. Expires December 15, 2016               [Page 9]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -513,7 +513,7 @@ Internet-Draft            NETCONF-notifications                June 2016
    Description: An element value is not correct;
                 e.g., wrong type, out of range, pattern mismatch.
 
-             Figure 9: Create Subscription Incorrect startTime
+             Figure 9: Create subscription incorrect startTime
 
 2.5.  Establishing a Subscription
 
@@ -557,7 +557,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 10]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 10]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -613,7 +613,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 11]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 11]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -669,7 +669,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 12]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 12]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -710,7 +710,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 2.5.4.  Multiple Subscriptions over a Single NETCONF Session
 
-   Note that "Event Notifications" requires supporting multiple
+   Note that [event-notifications] requires supporting multiple
    subscriptions over a single NETCONF session.  In contrast, [RFC5277]
    mandated server to return an error when a create-subscription was
    sent while a subscription was active on that session.
@@ -725,7 +725,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 13]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 13]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -755,7 +755,7 @@ Internet-Draft            NETCONF-notifications                June 2016
          |                              |
 
 
-          Figure 14: Message Flow for Subscription Establishment
+          Figure 14: Message flow for subscription establishment
 
 
 
@@ -781,7 +781,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 14]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 14]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -820,8 +820,8 @@ Internet-Draft            NETCONF-notifications                June 2016
          |                              |
 
 
-   Figure 15: Message Flow for Multiple Subscription Establishments over
-                             a Single Session
+   Figure 15: Message Flow for multiple subscription establishments over
+                             a single session
 
 2.6.  Modifying a Subscription
 
@@ -837,7 +837,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 15]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 15]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -893,7 +893,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 16]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 16]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -949,7 +949,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 17]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 17]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1005,7 +1005,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 18]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 18]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1061,7 +1061,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 19]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 19]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1097,7 +1097,7 @@ Internet-Draft            NETCONF-notifications                June 2016
          |                              |
 
 
-           Figure 20: Message Flow for Subscription Modification
+           Figure 20: Message flow for subscription modification
 
 2.7.  Deleting a Subscription
 
@@ -1117,7 +1117,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 20]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 20]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1173,7 +1173,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 21]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 21]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1229,7 +1229,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 22]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 22]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1265,7 +1265,7 @@ Internet-Draft            NETCONF-notifications                June 2016
          |                              |
 
 
-             Figure 24: Message Flow for Subscription Deletion
+             Figure 24: Message flow for subscription deletion
 
 2.8.  Configured Subscriptions
 
@@ -1285,7 +1285,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 23]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 23]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1341,7 +1341,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 24]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 24]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1397,7 +1397,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 25]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 25]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1442,7 +1442,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-    Figure 28: Message Flow for Subscription Establishment (configured
+    Figure 28: Message flow for subscription establishment (configured
                                subscription)
 
 2.8.2.  Modifying a Configured Subscription
@@ -1453,7 +1453,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 26]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 26]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1509,7 +1509,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 27]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 27]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1565,7 +1565,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 28]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 28]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1615,13 +1615,13 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-     Figure 31: Message Flow for Subscription Modification (configured
+     Figure 31: Message flow for subscription modification (configured
                                subscription)
 
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 29]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 29]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1677,7 +1677,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 30]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 30]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1716,7 +1716,7 @@ Internet-Draft            NETCONF-notifications                June 2016
        |                            |                |            |
 
 
-       Figure 33: Message Flow for Subscription Deletion (configured
+       Figure 33: Message flow for subscription deletion (configured
                                subscription)
 
 2.9.  Event (Data Plane) Notifications
@@ -1733,7 +1733,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 31]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 31]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1789,7 +1789,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 32]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 32]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1806,7 +1806,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
                     Figure 35: Data plane notification
 
-   The equivalent using json encoding would be
+   The equivalent using JSON encoding would be
 
    <notification
           xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
@@ -1827,10 +1827,10 @@ Internet-Draft            NETCONF-notifications                June 2016
 2.10.  Control Plane Notifications
 
    In addition to data plane notifications, a server may send control
-   plane notifications (defined in "Event Notifications") to indicate to
+   plane notifications (defined in [event-notifications]) to indicate to
    receivers that an event related to the subscription management has
    occurred.  Control plane notifications cannot be filtered out.  Next
-   we exemplify them using both xml, and json encondings for the data:
+   we exemplify them using both XML, and JSON encondings for the data:
 
 2.10.1.  replayComplete
 
@@ -1840,17 +1840,17 @@ Internet-Draft            NETCONF-notifications                June 2016
     <replayComplete xmlns="urn:ietf:params:xml:ns:netmod:notification"/>
 </notification>
 
-           Figure 37: Replay Complete control plane notification
+           Figure 37: replayComplete control plane notification
 
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 33]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 33]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
 
-   The equivalent using json encoding would be:
+   The equivalent using JSON encoding would be:
 
 <notification
        xmlns=" urn:ietf:params:xml:ns:netconf:notification:1.0">
@@ -1864,7 +1864,7 @@ Internet-Draft            NETCONF-notifications                June 2016
     <replayComplete xmlns="urn:ietf:params:xml:ns:netmod:notification"/>
 </notification>
 
-   Figure 38: Replay Complete control plane notification (json encoding)
+   Figure 38: replayComplete control plane notification (JSON encoding)
 
 2.10.1.1.  Message Flow Example
 
@@ -1901,7 +1901,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 34]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 34]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -1940,7 +1940,7 @@ Internet-Draft            NETCONF-notifications                June 2016
          |                              |
 
 
-                  Figure 39: Replay Complete Notification
+                  Figure 39: replayComplete notification
 
 2.10.2.  notificationComplete
 
@@ -1951,13 +1951,13 @@ Internet-Draft            NETCONF-notifications                June 2016
        xmlns="urn:ietf:params:xml:ns:netmod:notification"/>
    </notification>
 
-        Figure 40: Notification Complete control plane notification
+        Figure 40: notificationComplete control plane notification
 
 
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 35]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 35]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -2013,7 +2013,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 36]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 36]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -2062,14 +2062,14 @@ Internet-Draft            NETCONF-notifications                June 2016
          |<-----------------------------|
          |                              |
          |                              |
-         |                              |
 
 
-               Figure 41: Notification Complete Notification
+               Figure 41: notificationComplete notification
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 37]
+
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 37]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -2090,9 +2090,9 @@ Internet-Draft            NETCONF-notifications                June 2016
       </subscription-started/>
   </notification>
 
-        Figure 42: Subscription started control plane notification
+        Figure 42: subscription-started control plane notification
 
-   The equivalent using json encoding would be:
+   The equivalent using JSON encoding would be:
 
 <notification
        xmlns=" urn:ietf:params:xml:ns:netconf:notification:1.0">
@@ -2109,7 +2109,7 @@ Internet-Draft            NETCONF-notifications                June 2016
     <replayComplete xmlns="urn:ietf:params:xml:ns:netmod:notification"/>
 </notification>
 
-     Figure 43: Subscription started control plane notification (json
+     Figure 43: subscription-started control plane notification (JSON
                                  encoding)
 
 2.10.4.  subscription-modified
@@ -2125,7 +2125,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 38]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 38]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -2142,7 +2142,7 @@ Internet-Draft            NETCONF-notifications                June 2016
       </subscription-started/>
   </notification>
 
-        Figure 44: Subscription modified control plane notification
+        Figure 44: subscription-modified control plane notification
 
 2.10.5.  subscription-terminated
 
@@ -2156,7 +2156,7 @@ Internet-Draft            NETCONF-notifications                June 2016
       </subscription-terminated/>
   </notification>
 
-       Figure 45: Subscription terminated control plane notification
+       Figure 45: subscription-terminated control plane notification
 
 2.10.6.  subscription-suspended
 
@@ -2170,7 +2170,7 @@ Internet-Draft            NETCONF-notifications                June 2016
       </subscription-suspended/>
   </notification>
 
-       Figure 46: Subscription suspended control plane notification
+       Figure 46: subscription-suspended control plane notification
 
 2.10.7.  subscription-resumed
 
@@ -2181,7 +2181,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 39]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 39]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -2196,7 +2196,7 @@ Internet-Draft            NETCONF-notifications                June 2016
       </subscription-resumed/>
   </notification>
 
-        Figure 47: Subscription resumed control plane notification
+        Figure 47: subscription-resumed control plane notification
 
 2.10.7.1.  Message Flow Examples
 
@@ -2237,7 +2237,7 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 40]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 40]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
@@ -2280,26 +2280,24 @@ Internet-Draft            NETCONF-notifications                June 2016
          |<-----------------------------|
          |                              |
          |                              |
-         |                              |
 
 
-
-        Figure 48: Subscription Suspended and Resumed Notifications
+        Figure 48: subscription-suspended and Resumed Notifications
 
 
  +----------+                 +-----------+     +---------+  +---------+
  |  Client  |                 |   Server  |     | Rcver A |  | Rcver B |
  +----------+                 +-----------+     +---------+  +---------+
+       |                            |                |            |
+       |    Capability Exchange     |                |            |
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 41]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 41]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
 
-       |                            |                |            |
-       |    Capability Exchange     |                |            |
        |<-------------------------->|                |            |
        |                            |                |            |
        |                            |                |            |
@@ -2349,17 +2347,15 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 42]
+
+
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 42]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
 
-       |                            |                |            |
-       |                            |                |            |
-
-
-        Figure 49: Subscription Suspended and Resumed Notifications
-                        (configured subscriptions)
+        Figure 49: subscription-suspended and subscription-resumed
+                 notifications (configured subscriptions)
 
 3.  Backwards Compatibility
 
@@ -2401,17 +2397,18 @@ Internet-Draft            NETCONF-notifications                June 2016
    this document.
 
    Note that to support backwards compatibility, the yang models in
-   "Event Notifications" include two types of naming conventions.  That
+   [event-notifications] include two types of naming conventions.  That
+   used in [RFC5277], e.g., replayComplete; and that commonly used in
+   yang models, e.g., subscription-started.
 
 
 
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 43]
+
+
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 43]
 
 Internet-Draft            NETCONF-notifications                June 2016
 
-
-   used in [RFC5277], e.g., replayComplete; and that commonly used in
-   yang models, e.g., subscription-started.
 
 4.  Security Considerations
 
@@ -2458,21 +2455,27 @@ Internet-Draft            NETCONF-notifications                June 2016
    permissions to receive specific event notification types.  The
    permissions are specified as a set of access control rules.
 
-
-
-
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 44]
-
-Internet-Draft            NETCONF-notifications                June 2016
-
-
    Note that streams can define additional authorization requirements.
    For instance, in [netconf-yang-push] each of the elements in its data
    plane notifications must also go through access control.
 
-5.  References
 
-5.1.  Normative References
+
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 44]
+
+Internet-Draft            NETCONF-notifications                June 2016
+
+
+5.  Acknowledgments
+
+   We wish to acknowledge the helpful contributions, comments, and
+   suggestions that were received from: Andy Bierman, Yan Gang, Peipei
+   Guo, Susan Hares, Tim Jenkins, Balazs Lengyel, Kent Watsen, and
+   Guangying Zheng.
+
+6.  References
+
+6.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2502,7 +2505,22 @@ Internet-Draft            NETCONF-notifications                June 2016
               DOI 10.17487/RFC6536, March 2012,
               <http://www.rfc-editor.org/info/rfc6536>.
 
-5.2.  Informative References
+6.2.  Informative References
+
+   [event-notifications]
+              Gonzalez Prieto, A., Clemm, A., Voit, Eric., Nilsen-
+              Nygaard, E., Tripathy, A., Chisholm, S., and H. Trevino,
+              "Subscribing to YANG-Defined Event Notifications", June
+              2016, <https://datatracker.ietf.org/doc/draft-gonzalez-
+              netconf-5277bis/>.
+
+
+
+
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 45]
+
+Internet-Draft            NETCONF-notifications                June 2016
+
 
    [netconf-yang-push]
               Clemm, A., Gonzalez Prieto, A., Voit, Eric., Tripathy, A.,
@@ -2510,17 +2528,6 @@ Internet-Draft            NETCONF-notifications                June 2016
               updates", February 2016,
               <https://datatracker.ietf.org/doc/draft-ietf-netconf-yang-
               push/>.
-
-
-
-
-
-
-
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 45]
-
-Internet-Draft            NETCONF-notifications                June 2016
-
 
 Appendix A.  Issues being worked and resolved
 
@@ -2531,9 +2538,9 @@ A.1.  Unresolved Issues
    NT1 - Along with rfc5277bis, should this draft obsolete 5277 or be in
    parallel with it?
 
-   NT2 - Stream discovery.  The current mechanism in "Event
-   Notifications" is NETCONF-centric.  This may need to change and this
-   document will need to adjust.
+   NT2 - Stream discovery.  The current mechanism in
+   [event-notifications] is NETCONF-centric.  This may need to change
+   and this document will need to adjust.
 
    NT3 - Support multiple create-subscriptions over a single NETCONF
    session? or only multiple establish-subscription?  Recommend only
@@ -2541,10 +2548,10 @@ A.1.  Unresolved Issues
    subscription, otherwise variations of supported RFCs and error states
    proliferate.
 
-   NT4 - Configured subscription need to be refined in "Event
-   Notifications" and then adjust this document based on it.
+   NT4 - Configured subscription need to be refined in
+   [event-notifications] and then adjust this document based on it.
 
-   NT5 - Express filter in json should be documented.
+   NT5 - Express filter in JSON should be documented.
 
 A.2.  Agreement in principal
 
@@ -2560,6 +2567,17 @@ Authors' Addresses
    Email: albertgo@cisco.com
 
 
+
+
+
+
+
+
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 46]
+
+Internet-Draft            NETCONF-notifications                June 2016
+
+
    Alexander Clemm
    Cisco Systems
 
@@ -2570,12 +2588,6 @@ Authors' Addresses
    Cisco Systems
 
    Email: evoit@cisco.com
-
-
-
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 46]
-
-Internet-Draft            NETCONF-notifications                June 2016
 
 
    Einar Nilsen-Nygaard
@@ -2617,16 +2629,4 @@ Internet-Draft            NETCONF-notifications                June 2016
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Gonzalez Prieto, et al. Expires December 11, 2016              [Page 47]
+Gonzalez Prieto, et al. Expires December 15, 2016              [Page 47]
