@@ -1,23 +1,27 @@
-<rpc message-id="201"
-    xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"
-    xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+<rpc message-id="201" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <edit-config>
     <target>
       <running/>
     </target>
-    <subscriptions
-      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
-      <subscription>
-        <identifier>22</identifier>
-        <encoding>encode-xml</encoding>
-        <stream>
-          <name>NETCONF</name>
-          <receiver>
-            <address>1.2.3.4</address>
-            <port>1234</port>
-          </receiver>
-        </stream>
-      </subscription>
-    </subscriptions>
+    <default-operation>none</default-operation>
+    <config>
+      <subscriptions xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+        <subscription>
+          <identifier>22</identifier>
+          <protocol>http2</protocol>
+          <encoding>encode-xml</encoding>
+          <stream>NETCONF</stream>
+          <receivers>
+            <receiver>
+              <address>1.2.3.4</address>
+              <port>1234</port>
+            </receiver>
+          </receivers>
+          <periodic>
+            <period>500</period>
+          </periodic>
+        </subscription>
+      </subscriptions>
+    </config>
   </edit-config>
 </rpc>
