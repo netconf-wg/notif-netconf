@@ -3,6 +3,8 @@ awaiting confirmation on comments being covered before posting
 also needs disposition on Kent's thoughts on Abstract & Intro
 
 
+
+
 NETCONF                                               A. Gonzalez Prieto
 Internet-Draft                                                    VMware
 Intended status: Standards Track                                 E. Voit
@@ -84,17 +86,17 @@ Table of Contents
    Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .   8
      A.1.  Event Stream Discovery  . . . . . . . . . . . . . . . . .   8
      A.2.  Dynamic Subscriptions . . . . . . . . . . . . . . . . . .   8
-     A.3.  Configured Subscriptions  . . . . . . . . . . . . . . . .  14
-     A.4.  Subscription State Notifications  . . . . . . . . . . . .  19
-   Appendix B.  Changes between revisions  . . . . . . . . . . . . .  21
-     B.1.  v08 to v09  . . . . . . . . . . . . . . . . . . . . . . .  21
-     B.2.  v07 to v08  . . . . . . . . . . . . . . . . . . . . . . .  21
-     B.3.  v06 to v07  . . . . . . . . . . . . . . . . . . . . . . .  21
-     B.4.  v05 to v06  . . . . . . . . . . . . . . . . . . . . . . .  21
-     B.5.  v03 to v04  . . . . . . . . . . . . . . . . . . . . . . .  22
-     B.6.  v01 to v03  . . . . . . . . . . . . . . . . . . . . . . .  22
-     B.7.  v00 to v01  . . . . . . . . . . . . . . . . . . . . . . .  22
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+     A.3.  Configured Subscriptions  . . . . . . . . . . . . . . . .  13
+     A.4.  Subscription State Notifications  . . . . . . . . . . . .  18
+   Appendix B.  Changes between revisions  . . . . . . . . . . . . .  20
+     B.1.  v08 to v09  . . . . . . . . . . . . . . . . . . . . . . .  20
+     B.2.  v07 to v08  . . . . . . . . . . . . . . . . . . . . . . .  20
+     B.3.  v06 to v07  . . . . . . . . . . . . . . . . . . . . . . .  20
+     B.4.  v05 to v06  . . . . . . . . . . . . . . . . . . . . . . .  20
+     B.5.  v03 to v04  . . . . . . . . . . . . . . . . . . . . . . .  20
+     B.6.  v01 to v03  . . . . . . . . . . . . . . . . . . . . . . .  20
+     B.7.  v00 to v01  . . . . . . . . . . . . . . . . . . . . . . .  20
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
 
 1.  Introduction
 
@@ -485,18 +487,18 @@ Internet-Draft                NETCONF-notif                   March 2018
    To provide examples of the information being transported, example
    messages for interactions (a) and (b) in Figure 2 are detailed below:
 
+<rpc message-id="102" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <establish-subscription
+      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <stream>NETCONF</stream>
+    <stream-xpath-filter xmlns:ex="http://example.com/events">
+      /ex:foo/
+    </stream-xpath-filter>
+    <dscp>10</dscp>
+  </establish-subscription>
+</rpc>
 
-
-
-
-
-
-
-
-
-
-
-
+               Figure 3: establish-subscription request (a)
 
 
 
@@ -506,24 +508,6 @@ Gonzalez Prieto, et al.Expires September 10, 2018               [Page 9]
 
 Internet-Draft                NETCONF-notif                   March 2018
 
-
-  <rpc netconf:message-id="102"
-    xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-    <establish-subscription
-      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
-      <stream>
-        <name>NETCONF</name>
-        <xpath-filter xmlns:ex="http://example.com/events">
-             /ex:foo
-        </xpath-filter>
-      </stream>
-      <dscp>
-         10
-      </dscp>
-    </establish-subscription>
-  </rpc>
-
-               Figure 3: establish-subscription request (a)
 
    As NETCONF publisher was able to fully satisfy the request (a), the
    publisher sends the subscription identifier of the accepted
@@ -545,33 +529,13 @@ Internet-Draft                NETCONF-notif                   March 2018
    For instance, if the "dscp" value of 10 asserted by the subscriber in
    Figure 3 proved unacceptable, the publisher may have returned:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 10]
-
-Internet-Draft                NETCONF-notif                   March 2018
-
-
    <rpc-reply message-id="102"
      xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
      <rpc-error>
       <error-type>application</error-type>
       <error-tag>operation-failed</error-tag>
       <error-severity>error</error-severity>
-      <error-app-tag>
-       dscp-unavailable
-      </error-app-tag>
+      <error-app-tag>dscp-unavailable</error-app-tag>
      </rpc-error>
    </rpc-reply>
 
@@ -587,6 +551,19 @@ A.2.2.  Modifying Dynamic Subscriptions
    between a subscriber and a publisher.  This negotiation consists of a
    failed RPC modification request/response, followed by a successful
    one.
+
+
+
+
+
+
+
+
+
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 10]
+
+Internet-Draft                NETCONF-notif                   March 2018
+
 
       +------------+                 +-----------+
       | Subscriber |                 | Publisher |
@@ -611,14 +588,6 @@ A.2.2.  Modifying Dynamic Subscriptions
 
    Figure 6: Interaction model for successful subscription modification
 
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 11]
-
-Internet-Draft                NETCONF-notif                   March 2018
-
-
    If the subscription being modified in Figure 6 is a datastore
    subscription as per [I-D.ietf-netconf-yang-push], the modification
    request made in (c) may look like that shown in Figure 7.  As can be
@@ -630,17 +599,13 @@ Internet-Draft                NETCONF-notif                   March 2018
   <modify-subscription
        xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"
        xmlns:yp="urn:ietf:params:xml:ns:yang:ietf-yang-push">
-    <yp:datastore>
-      <yp:xpath-filter xmlns="http://example.com/datastore">
+    <identifier>23</identifier>
+    <yp:datastore-xpath-filter xmlns="http://example.com/datastore">
         /interfaces-state/interface/oper-status
-      </yp:xpath-filter>
-      <yp:periodic>
-        <yp:period>500</yp:period>
-      </yp:periodic>
-    </yp:datastore>
-    <identifier>
-      23
-    </identifier>
+    </yp:datastore-xpath-filter>
+    <yp:periodic>
+      <yp:period>500</yp:period>
+    </yp:periodic>
   </modify-subscription>
 </rpc>
 
@@ -648,32 +613,18 @@ Internet-Draft                NETCONF-notif                   March 2018
 
    If the NETCONF publisher can satisfy both changes, the publisher
    sends a positive result for the RPC.  If the NETCONF publisher cannot
+
+
+
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 11]
+
+Internet-Draft                NETCONF-notif                   March 2018
+
+
    satisfy either of the proposed changes, the publisher sends an RPC
    error response (d).  The following is an example RPC error response
    for (d) which includes a hint.  This hint is an alternative time
    period value which might have resulted in a successful modification:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 12]
-
-Internet-Draft                NETCONF-notif                   March 2018
-
 
    <rpc-reply message-id="303"
      xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
@@ -717,19 +668,17 @@ A.2.3.  Deleting Dynamic Subscriptions
    If the NETCONF publisher cannot satisfy the request, the publisher
    sends an error-rpc element indicating the modification didn't work.
    Figure 10 shows a valid response for existing valid subscription
-   identifier, but that subscription identifier was created on a
-   different NETCONF transport session:
 
 
 
 
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 13]
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 12]
 
 Internet-Draft                NETCONF-notif                   March 2018
 
+
+   identifier, but that subscription identifier was created on a
+   different NETCONF transport session:
 
    <rpc-reply message-id="103"
      xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
@@ -779,35 +728,37 @@ A.3.1.  Creating Configured Subscriptions
 
 
 
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 14]
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 13]
 
 Internet-Draft                NETCONF-notif                   March 2018
 
 
-<rpc message-id="201"
-    xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"
-    xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+<rpc message-id="201" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <edit-config>
     <target>
       <running/>
     </target>
-    <subscriptions
+    <default-operation>none</default-operation>
+    <config>
+      <subscriptions
       xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
-      <subscription>
-        <identifier>22</identifier>
-        <encoding>encode-xml</encoding>
-        <stream>
-          <name>NETCONF</name>
-          <receiver>
-            <address>1.2.3.4</address>
-            <port>1234</port>
-          </receiver>
-        </stream>
-      </subscription>
-    </subscriptions>
+        <subscription>
+          <identifier>22</identifier>
+          <protocol>http2</protocol>
+          <encoding>encode-xml</encoding>
+          <stream>NETCONF</stream>
+          <receivers>
+            <receiver>
+              <address>1.2.3.4</address>
+              <port>1234</port>
+            </receiver>
+          </receivers>
+          <periodic>
+            <period>500</period>
+          </periodic>
+        </subscription>
+      </subscriptions>
+    </config>
   </edit-config>
 </rpc>
 
@@ -817,31 +768,45 @@ Internet-Draft                NETCONF-notif                   March 2018
    request is not accepted because the publisher cannot serve it, no
    configuration is changed.  In this case the publisher may reply:
 
-      <rpc-reply message-id="201"
-                 xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-          <rpc-error>
-              <error-type>application</error-type>
-              <error-tag>resource-denied</error-tag>
-              <error-severity>error</error-severity>
-              <error-message xml:lang="en">
-                  Temporarily the publisher cannot serve this
-                  subscription due to the current workload.
-              </error-message>
-          </rpc-error>
-      </rpc-reply>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 14]
+
+Internet-Draft                NETCONF-notif                   March 2018
+
+
+   <rpc-reply message-id="201"
+     xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+     <rpc-error>
+       <error-type>application</error-type>
+       <error-tag>resource-denied</error-tag>
+       <error-severity>error</error-severity>
+       <error-message xml:lang="en">
+         Temporarily the publisher cannot serve this
+         subscription due to the current workload.
+       </error-message>
+     </rpc-error>
+   </rpc-reply>
 
    Figure 12: Response to a failed configured subscription establishment
 
    After a subscription has been created, NETCONF connectivity to each
    receiver's IP address and port will be established if it does not
    already exist.  This will be accomplished via [RFC8071].
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 15]
-
-Internet-Draft                NETCONF-notif                   March 2018
-
 
    The following figure shows the interaction model for the successful
    creation of a configured subscription.
@@ -872,6 +837,14 @@ Internet-Draft                NETCONF-notif                   March 2018
          Figure 13: Interaction model for configured subscription
                                establishment
 
+
+
+
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 15]
+
+Internet-Draft                NETCONF-notif                   March 2018
+
+
 A.3.2.  Modifying Configured Subscriptions
 
    Configured subscriptions can be modified using configuration
@@ -880,50 +853,29 @@ A.3.2.  Modifying Configured Subscriptions
    For example, the subscription established in the previous section
    could be modified as follows, here a adding a second receiver:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 16]
-
-Internet-Draft                NETCONF-notif                   March 2018
-
-
-   <rpc message-id="202"
-          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"
-          xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
-     <edit-config>
-       <target>
-         <running/>
-       </target>
-       <subscriptions
+<rpc message-id="202" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <edit-config>
+    <target>
+      <running/>
+    </target>
+    <config>
+      <subscriptions
       xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
-         <subscription>
-           <identifier>
-             1922
-           </identifier>
-           <receiver>
-             <address>
-               1.2.3.5
-             </address>
-             <port>
-               1234
-             </port>
-           </receiver>
-         </subscription>
-       </subscriptions>
-     </edit-config>
-   </rpc>
+        <subscription>
+          <identifier>
+            1922
+          </identifier>
+          <receivers>
+            <receiver>
+              <address>1.2.3.5</address>
+              <port>1235</port>
+            </receiver>
+          </receivers>
+        </subscription>
+      </subscriptions>
+    </config>
+  </edit-config>
+</rpc>
 
                  Figure 14: Modify configured subscription
 
@@ -944,13 +896,7 @@ Internet-Draft                NETCONF-notif                   March 2018
 
 
 
-
-
-
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 17]
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 16]
 
 Internet-Draft                NETCONF-notif                   March 2018
 
@@ -1006,7 +952,7 @@ A.3.3.  Deleting Configured Subscriptions
 
 
 
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 18]
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 17]
 
 Internet-Draft                NETCONF-notif                   March 2018
 
@@ -1043,47 +989,29 @@ A.4.1.  subscription-started and subscription-modified
 
    A "subscription-started" over NETCONF encoded in XML would look like:
 
+ <notification xmlns=" urn:ietf:params:xml:ns:netconf:notification:1.0">
+   <eventTime>2007-09-01T10:00:00Z</eventTime>
+   <subscription-started
+     xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+     <identifier>39</identifier>
+     <protocol>http2</protocol>
+     <encoding>encode-xml</encoding>
+     <stream-xpath-filter xmlns:ex="http://example.com/events">
+       /ex:foo
+     </stream-xpath-filter>
+     <stream>NETCONF</stream>
+   </subscription-started>
+ </notification>
+
+      Figure 17: subscription-started subscription state notification
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 19]
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 18]
 
 Internet-Draft                NETCONF-notif                   March 2018
 
-
-  <notification
-    xmlns=" urn:ietf:params:xml:ns:netconf:notification:1.0">
-    <eventTime>2007-09-01T10:00:00Z</eventTime>
-    <subscription-started
-      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
-      <identifier>39</identifier>
-      <encoding>encode-xml</encoding>
-      <stream>
-        <name>NETCONF</name>
-        <xpath-filter xmlns:ex="http://example.com/events">
-             /ex:foo
-        </xpath-filter>
-      </stream>
-    </subscription-started>
-  </notification>
-
-      Figure 17: subscription-started subscription state notification
 
    The "subscription-modified" is identical to Figure 17, with just the
    word "started" being replaced by "modified".
@@ -1112,17 +1040,6 @@ A.4.3.  subscription-terminated and subscription-suspended
 
    A "subscription-terminated" would look like:
 
-
-
-
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 20]
-
-Internet-Draft                NETCONF-notif                   March 2018
-
-
   <notification
     xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
     <eventTime>2007-09-01T10:00:00Z</eventTime>
@@ -1140,6 +1057,17 @@ Internet-Draft                NETCONF-notif                   March 2018
    The "subscription-suspended" is virtually identical, with
    "subscription-terminated" simply being replaced by "subscription-
    suspended".
+
+
+
+
+
+
+
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 19]
+
+Internet-Draft                NETCONF-notif                   March 2018
+
 
 Appendix B.  Changes between revisions
 
@@ -1169,16 +1097,6 @@ B.4.  v05 to v06
    o  Note: this is a major revision attempting to cover those comments
       received from two week review.
 
-
-
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 21]
-
-Internet-Draft                NETCONF-notif                   March 2018
-
-
 B.5.  v03 to v04
 
    o  Added additional detail to "configured subscriptions"
@@ -1199,6 +1117,14 @@ B.7.  v00 to v01
       No need to support multiple create-subscription.
    o  Added mapping between terminology in yang-push and [RFC6241] (the
       one followed in this document).
+
+
+
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 20]
+
+Internet-Draft                NETCONF-notif                   March 2018
+
+
    o  Editorial improvements.
 
 Authors' Addresses
@@ -1227,14 +1153,6 @@ Authors' Addresses
    Email: einarnn@cisco.com
 
 
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 22]
-
-Internet-Draft                NETCONF-notif                   March 2018
-
-
    Ambika Prasad Tripathy
    Cisco Systems
 
@@ -1258,32 +1176,4 @@ Internet-Draft                NETCONF-notif                   March 2018
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Gonzalez Prieto, et al.Expires September 10, 2018              [Page 23]
+Gonzalez Prieto, et al.Expires September 10, 2018              [Page 21]
