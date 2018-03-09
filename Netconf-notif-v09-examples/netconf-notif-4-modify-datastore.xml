@@ -3,16 +3,12 @@
   <modify-subscription
        xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"
        xmlns:yp="urn:ietf:params:xml:ns:yang:ietf-yang-push">
-    <yp:datastore>
-      <yp:xpath-filter xmlns="http://example.com/datastore"> 
+    <identifier>23</identifier>
+    <yp:datastore-xpath-filter xmlns="http://example.com/datastore"> 
         /interfaces-state/interface/oper-status
-      </yp:xpath-filter>
-      <yp:periodic>
-        <yp:period>500</yp:period>
-      </yp:periodic> 
-    </yp:datastore>
-    <identifier>
-      23
-    </identifier>
+    </yp:datastore-xpath-filter>
+    <yp:periodic>
+      <yp:period>500</yp:period>
+    </yp:periodic> 
   </modify-subscription>
 </rpc>

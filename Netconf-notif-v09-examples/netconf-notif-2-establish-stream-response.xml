@@ -1,7 +1,5 @@
-<rpc-reply message-id="102"
-  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-  <identifier
-    xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+<rpc-reply message-id="102" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <identifier xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
     22
   </identifier>
 </rpc-reply>

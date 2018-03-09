@@ -1,15 +1,7 @@
-<rpc netconf:message-id="102"
-  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-  <establish-subscription
-    xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
-    <stream>
-      <name>NETCONF</name>
-      <xpath-filter xmlns:ex="http://example.com/events">
-           /ex:foo
-      </xpath-filter>
-    </stream>
-    <dscp>
-       10
-    </dscp>
+<rpc message-id="102" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <establish-subscription xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <stream>NETCONF</stream>
+    <stream-xpath-filter xmlns:ex="http://example.com/events">/ex:foo/</stream-xpath-filter>
+    <dscp>10</dscp>
   </establish-subscription>
 </rpc>
