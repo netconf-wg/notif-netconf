@@ -1,19 +1,19 @@
 PRE-DRAFT: 
 awaiting confirmation on comments being covered before posting
 also needs disposition on Kent's thoughts on Abstract & Intro
-
+-------------------------------------------------------------
 
 
 NETCONF                                                          E. Voit
 Internet-Draft                                             Cisco Systems
 Intended status: Standards Track                                A. Clemm
-Expires: October 12, 2018                                         Huawei
+Expires: October 22, 2018                                         Huawei
                                                       A. Gonzalez Prieto
                                                                   VMware
                                                        E. Nilsen-Nygaard
                                                              A. Tripathy
                                                            Cisco Systems
-                                                          April 10, 2018
+                                                          April 20, 2018
 
 
                 NETCONF Support for Event Notifications
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 12, 2018.
+   This Internet-Draft will expire on October 22, 2018.
 
 Copyright Notice
 
@@ -55,7 +55,7 @@ Copyright Notice
 
 
 
-Voit, et al.            Expires October 12, 2018                [Page 1]
+Voit, et al.            Expires October 22, 2018                [Page 1]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -82,11 +82,11 @@ Table of Contents
    9.  YANG module . . . . . . . . . . . . . . . . . . . . . . . . .   6
    10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
    11. Security Considerations . . . . . . . . . . . . . . . . . . .   8
-   12. Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   8
-   13. Normative References  . . . . . . . . . . . . . . . . . . . .   8
+   12. Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   9
+   13. Normative References  . . . . . . . . . . . . . . . . . . . .   9
    Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  10
      A.1.  Event Stream Discovery  . . . . . . . . . . . . . . . . .  10
-     A.2.  Dynamic Subscriptions . . . . . . . . . . . . . . . . . .  10
+     A.2.  Dynamic Subscriptions . . . . . . . . . . . . . . . . . .  11
      A.3.  Configured Subscriptions  . . . . . . . . . . . . . . . .  15
      A.4.  Subscription State Notifications  . . . . . . . . . . . .  20
    Appendix B.  Changes between revisions  . . . . . . . . . . . . .  22
@@ -111,7 +111,7 @@ Table of Contents
 
 
 
-Voit, et al.            Expires October 12, 2018                [Page 2]
+Voit, et al.            Expires October 22, 2018                [Page 2]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -167,7 +167,7 @@ Internet-Draft                NETCONF-notif                   April 2018
 
 
 
-Voit, et al.            Expires October 12, 2018                [Page 3]
+Voit, et al.            Expires October 22, 2018                [Page 3]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -223,7 +223,7 @@ Internet-Draft                NETCONF-notif                   April 2018
 
 
 
-Voit, et al.            Expires October 12, 2018                [Page 4]
+Voit, et al.            Expires October 22, 2018                [Page 4]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -279,7 +279,7 @@ Internet-Draft                NETCONF-notif                   April 2018
 
 
 
-Voit, et al.            Expires October 12, 2018                [Page 5]
+Voit, et al.            Expires October 22, 2018                [Page 5]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -298,14 +298,14 @@ Internet-Draft                NETCONF-notif                   April 2018
       hints for parameter settings that might lead to successful RPC
       requests in the future.  Following are the yang-data structures
       which may be returned:
-		
+
       establish-subscription returns hints in yang-data structure
-      ---------------------- ------------------------------------     
+      ---------------------- ------------------------------------
       target: event stream   establish-subscription-stream-error-info
       target: datastore      establish-subscription-datastore-error-info
-			
+
       modify-subscription    returns hints in yang-data structure
-      ---------------------- ------------------------------------     
+      ---------------------- ------------------------------------
       target: event stream   modify-subscription-stream-error-info
       target: datastore      modify-subscription-datastore-error-info
 
@@ -327,74 +327,91 @@ Internet-Draft                NETCONF-notif                   April 2018
 
 9.  YANG module
 
-   module ietf-netconf-notifications {
-     yang-version 1.1;
-     namespace
-       "urn:ietf:params:xml:ns:yang:ietf-netconf-notifications";
+   This module references
+   [I-D.draft-ietf-netconf-subscribed-notifications].
+
+   [ note to the RFC Editor - please replace XXXX within this YANG model
+   with the number of this document ]
 
 
 
-
-Voit, et al.            Expires October 12, 2018                [Page 6]
+Voit, et al.            Expires October 22, 2018                [Page 6]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
 
-     prefix nn;
+ module ietf-netconf-notifications {
+   yang-version 1.1;
+   namespace
+     "urn:ietf:params:xml:ns:yang:ietf-netconf-notifications";
 
-     import ietf-subscribed-notifications {
-       prefix sn;
-     }
+   prefix nn;
 
-     organization "IETF NETCONF (Network Configuration) Working Group";
-     contact
-       "WG Web:   <http:/tools.ietf.org/wg/netconf/>
-        WG List:  <mailto:netconf@ietf.org>
-
-        Editor:   Eric Voit
-                  <mailto:evoit@cisco.com>
-
-        Editor:   Alexander Clemm
-                  <mailto:ludwig@clemm.org>
-
-        Editor:   Alberto Gonzalez Prieto
-                  <mailto:agonzalezpri@vmware.com>
-
-        Editor:   Ambika Prasad Tripathy
-                  <mailto:ambtripa@cisco.com>
-
-        Editor:   Einar Nilsen-Nygaard
-                  <mailto:einarnn@cisco.com>";
-
-
-     description
-       "Defines NETCONF as a supported transport for subscribed event
-       notifications.";
-
-     revision 2018-04-03 {
-       description
-         "Initial version";
-       reference
-       "RFC XXXX: NETCONF Support for Event Notifications";
-     }
-
-
-     identity netconf {
-       base sn:transport;
-       base sn:inline-address;
-       description
-         "NETCONF is used as a transport for notification messages and
-          state change notifications.";
-     }
-
+   import ietf-subscribed-notifications {
+     prefix sn;
    }
 
+   organization "IETF NETCONF (Network Configuration) Working Group";
+   contact
+     "WG Web:   <http:/tools.ietf.org/wg/netconf/>
+      WG List:  <mailto:netconf@ietf.org>
+
+      Editor:   Eric Voit
+                <mailto:evoit@cisco.com>
+
+      Editor:   Alexander Clemm
+                <mailto:ludwig@clemm.org>
+
+      Editor:   Alberto Gonzalez Prieto
+                <mailto:agonzalezpri@vmware.com>
+
+      Editor:   Ambika Prasad Tripathy
+                <mailto:ambtripa@cisco.com>
+
+      Editor:   Einar Nilsen-Nygaard
+                <mailto:einarnn@cisco.com>";
 
 
-Voit, et al.            Expires October 12, 2018                [Page 7]
+   description
+     "Defines NETCONF as a supported transport for subscribed event
+     notifications.
+
+     Copyright (c) 2018 IETF Trust and the persons identified as authors
+     of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or without
+     modification, is permitted pursuant to, and subject to the license
+     terms contained in, the Simplified BSD License set forth in Section
+     4.c of the IETF Trust's Legal Provisions Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX; see the RFC
+     itself for full legal notices.";
+
+
+
+
+Voit, et al.            Expires October 22, 2018                [Page 7]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
+
+   revision 2018-04-20 {
+     description
+       "Initial version";
+     reference
+       "RFC XXXX: NETCONF Support for Event Notifications";
+   }
+
+   identity netconf {
+     base sn:transport;
+     base sn:inline-address;
+     description
+       "NETCONF is used as a transport for notification messages and
+        state change notifications.";
+   }
+
+ }
 
 10.  IANA Considerations
 
@@ -428,6 +445,13 @@ Internet-Draft                NETCONF-notif                   April 2018
    This draft does not define a YANG module and therefore doesn't have
    any YANG-related Security Considerations.
 
+
+
+Voit, et al.            Expires October 22, 2018                [Page 8]
+
+Internet-Draft                NETCONF-notif                   April 2018
+
+
 12.  Acknowledgments
 
    We wish to acknowledge the helpful contributions, comments, and
@@ -443,14 +467,6 @@ Internet-Draft                NETCONF-notif                   April 2018
               and E. Nilsen-Nygaard, "Customized Subscriptions to a
               Publisher's Event Streams", draft-ietf-netconf-subscribed-
               notifications-11 (work in progress), April 2018.
-
-
-
-
-Voit, et al.            Expires October 12, 2018                [Page 8]
-
-Internet-Draft                NETCONF-notif                   April 2018
-
 
    [I-D.ietf-netconf-yang-push]
               Clemm, Alexander., Voit, Eric., Gonzalez Prieto, Alberto.,
@@ -483,6 +499,15 @@ Internet-Draft                NETCONF-notif                   April 2018
               DOI 10.17487/RFC6020, October 2010,
               <https://www.rfc-editor.org/info/rfc6020>.
 
+
+
+
+
+Voit, et al.            Expires October 22, 2018                [Page 9]
+
+Internet-Draft                NETCONF-notif                   April 2018
+
+
    [RFC6241]  Enns, R., Ed., Bjorklund, M., Ed., Schoenwaelder, J., Ed.,
               and A. Bierman, Ed., "Network Configuration Protocol
               (NETCONF)", RFC 6241, DOI 10.17487/RFC6241, June 2011,
@@ -495,18 +520,6 @@ Internet-Draft                NETCONF-notif                   April 2018
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-
-
-
-
-
-Voit, et al.            Expires October 12, 2018                [Page 9]
-
-Internet-Draft                NETCONF-notif                   April 2018
-
 
 Appendix A.  Examples
 
@@ -540,6 +553,17 @@ A.1.  Event Stream Discovery
    streams available, as well as additional information which might
    exist in the container.
 
+
+
+
+
+
+
+Voit, et al.            Expires October 22, 2018               [Page 10]
+
+Internet-Draft                NETCONF-notif                   April 2018
+
+
 A.2.  Dynamic Subscriptions
 
 A.2.1.  Establishing Dynamic Subscriptions
@@ -549,20 +573,6 @@ A.2.1.  Establishing Dynamic Subscriptions
    [I-D.draft-ietf-netconf-subscribed-notifications].  The first request
    is given a subscription identifier of 22, the second, an identifier
    of 23.
-
-
-
-
-
-
-
-
-
-
-Voit, et al.            Expires October 12, 2018               [Page 10]
-
-Internet-Draft                NETCONF-notif                   April 2018
-
 
       +------------+                 +-----------+
       | Subscriber |                 | Publisher |
@@ -598,6 +608,18 @@ Internet-Draft                NETCONF-notif                   April 2018
    To provide examples of the information being transported, example
    messages for interactions (a) and (b) in Figure 2 are detailed below:
 
+
+
+
+
+
+
+
+Voit, et al.            Expires October 22, 2018               [Page 11]
+
+Internet-Draft                NETCONF-notif                   April 2018
+
+
 <rpc message-id="102" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <establish-subscription
       xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
@@ -610,15 +632,6 @@ Internet-Draft                NETCONF-notif                   April 2018
 </rpc>
 
                Figure 3: establish-subscription request (a)
-
-
-
-
-
-Voit, et al.            Expires October 12, 2018               [Page 11]
-
-Internet-Draft                NETCONF-notif                   April 2018
-
 
    As NETCONF publisher was able to fully satisfy the request (a), the
    publisher sends the subscription identifier of the accepted
@@ -655,6 +668,14 @@ Internet-Draft                NETCONF-notif                   April 2018
    The subscriber can use this information in future attempts to
    establish a subscription.
 
+
+
+
+Voit, et al.            Expires October 22, 2018               [Page 12]
+
+Internet-Draft                NETCONF-notif                   April 2018
+
+
 A.2.2.  Modifying Dynamic Subscriptions
 
    An existing subscription may be modified.  The following exchange
@@ -662,19 +683,6 @@ A.2.2.  Modifying Dynamic Subscriptions
    between a subscriber and a publisher.  This negotiation consists of a
    failed RPC modification request/response, followed by a successful
    one.
-
-
-
-
-
-
-
-
-
-Voit, et al.            Expires October 12, 2018               [Page 12]
-
-Internet-Draft                NETCONF-notif                   April 2018
-
 
       +------------+                 +-----------+
       | Subscriber |                 | Publisher |
@@ -705,6 +713,25 @@ Internet-Draft                NETCONF-notif                   April 2018
    seen, the modifications being attempted are the application of a new
    xpath filter as well as the setting of a new periodic time interval.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Voit, et al.            Expires October 22, 2018               [Page 13]
+
+Internet-Draft                NETCONF-notif                   April 2018
+
+
 <rpc message-id="303"
   xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <modify-subscription
@@ -724,14 +751,6 @@ Internet-Draft                NETCONF-notif                   April 2018
 
    If the NETCONF publisher can satisfy both changes, the publisher
    sends a positive result for the RPC.  If the NETCONF publisher cannot
-
-
-
-Voit, et al.            Expires October 12, 2018               [Page 13]
-
-Internet-Draft                NETCONF-notif                   April 2018
-
-
    satisfy either of the proposed changes, the publisher sends an RPC
    error response (d).  The following is an example RPC error response
    for (d) which includes a hint.  This hint is an alternative time
@@ -759,6 +778,16 @@ Internet-Draft                NETCONF-notif                   April 2018
 
             Figure 8: Modify subscription failure with Hint (d)
 
+
+
+
+
+
+Voit, et al.            Expires October 22, 2018               [Page 14]
+
+Internet-Draft                NETCONF-notif                   April 2018
+
+
 A.2.3.  Deleting Dynamic Subscriptions
 
    The following demonstrates deleting a subscription.  This
@@ -780,14 +809,6 @@ A.2.3.  Deleting Dynamic Subscriptions
    If the NETCONF publisher cannot satisfy the request, the publisher
    sends an error-rpc element indicating the modification didn't work.
    Figure 10 shows a valid response for existing valid subscription
-
-
-
-Voit, et al.            Expires October 12, 2018               [Page 14]
-
-Internet-Draft                NETCONF-notif                   April 2018
-
-
    identifier, but that subscription identifier was created on a
    different NETCONF transport session:
 
@@ -815,34 +836,17 @@ A.3.  Configured Subscriptions
    In this section, we present examples of how to manage the
    configuration subscriptions using a NETCONF client.
 
-A.3.1.  Creating Configured Subscriptions
-
-   For subscription creation, a NETCONF client may send:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Voit, et al.            Expires October 12, 2018               [Page 15]
+Voit, et al.            Expires October 22, 2018               [Page 15]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
+
+A.3.1.  Creating Configured Subscriptions
+
+   For subscription creation, a NETCONF client may send:
 
 <rpc message-id="201" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <edit-config>
@@ -876,6 +880,26 @@ Internet-Draft                NETCONF-notif                   April 2018
    request is not accepted because the publisher cannot serve it, no
    configuration is changed.  In this case the publisher may reply:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Voit, et al.            Expires October 22, 2018               [Page 16]
+
+Internet-Draft                NETCONF-notif                   April 2018
+
+
    <rpc-reply message-id="201"
      xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
      <rpc-error>
@@ -890,15 +914,6 @@ Internet-Draft                NETCONF-notif                   April 2018
    </rpc-reply>
 
    Figure 12: Response to a failed configured subscription establishment
-
-
-
-
-
-Voit, et al.            Expires October 12, 2018               [Page 16]
-
-Internet-Draft                NETCONF-notif                   April 2018
-
 
    After a subscription has been created, NETCONF connectivity to each
    receiver will be established if it does not already exist.  This will
@@ -933,6 +948,14 @@ Internet-Draft                NETCONF-notif                   April 2018
          Figure 13: Interaction model for configured subscription
                                establishment
 
+
+
+
+Voit, et al.            Expires October 22, 2018               [Page 17]
+
+Internet-Draft                NETCONF-notif                   April 2018
+
+
 A.3.2.  Modifying Configured Subscriptions
 
    Configured subscriptions can be modified using configuration
@@ -940,21 +963,6 @@ A.3.2.  Modifying Configured Subscriptions
 
    For example, the subscription established in the previous section
    could be modified as follows, here a adding a second receiver:
-
-
-
-
-
-
-
-
-
-
-
-Voit, et al.            Expires October 12, 2018               [Page 17]
-
-Internet-Draft                NETCONF-notif                   April 2018
-
 
 <rpc message-id="202" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <edit-config>
@@ -999,15 +1007,7 @@ Internet-Draft                NETCONF-notif                   April 2018
 
 
 
-
-
-
-
-
-
-
-
-Voit, et al.            Expires October 12, 2018               [Page 18]
+Voit, et al.            Expires October 22, 2018               [Page 18]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -1063,7 +1063,7 @@ A.3.3.  Deleting Configured Subscriptions
 
 
 
-Voit, et al.            Expires October 12, 2018               [Page 19]
+Voit, et al.            Expires October 22, 2018               [Page 19]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -1119,7 +1119,7 @@ A.4.1.  subscription-started and subscription-modified
 
 
 
-Voit, et al.            Expires October 12, 2018               [Page 20]
+Voit, et al.            Expires October 22, 2018               [Page 20]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -1175,7 +1175,7 @@ A.4.3.  subscription-terminated and subscription-suspended
 
 
 
-Voit, et al.            Expires October 12, 2018               [Page 21]
+Voit, et al.            Expires October 22, 2018               [Page 21]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -1231,7 +1231,7 @@ B.7.  v00 to v01
 
 
 
-Voit, et al.            Expires October 12, 2018               [Page 22]
+Voit, et al.            Expires October 22, 2018               [Page 22]
 
 Internet-Draft                NETCONF-notif                   April 2018
 
@@ -1287,4 +1287,4 @@ Authors' Addresses
 
 
 
-Voit, et al.            Expires October 12, 2018               [Page 23]
+Voit, et al.            Expires October 22, 2018               [Page 23]
