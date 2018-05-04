@@ -6,8 +6,8 @@
     "urn:ietf:params:xml:ns:yang:ietf-netconf-subscribed-notifications">
     <identifier>39</identifier>
     <nsn:transport>NETCONF</nsn:transport>
-    <stream-xpath-filter xmlns:ex="http://example.com/events">
-      /ex:foo
+    <stream-xpath-filter xmlns="http://example.com/events">
+      /foo
     </stream-xpath-filter>
     <stream>NETCONF</stream>
   </subscription-started>

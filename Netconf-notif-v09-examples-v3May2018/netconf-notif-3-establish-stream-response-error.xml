@@ -1,5 +1,8 @@
 <rpc-reply message-id="102" 
   xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <identifier xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    0
+  </identifier>
   <rpc-error>
    <error-type>application</error-type>
    <error-tag>operation-failed</error-tag>

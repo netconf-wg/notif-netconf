@@ -266,7 +266,9 @@ module ietf-yang-push {
       }
       leaf datastore-xpath-filter {
         if-feature "sn:xpath";
-        type yang:xpath1.0;
+        // einarnn: hack for yanglint
+        // type yang:xpath1.0;
+        type string;
         description
           "This parameter contains an XPath expression identifying the 
           portions of the target datastore to retrieve.
