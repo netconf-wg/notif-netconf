@@ -5,9 +5,7 @@
     </target>
     <default-operation>none</default-operation>
     <config>
-      <subscriptions 
-      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"
-	  >
+      <subscriptions xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
         <subscription>
           <identifier>22</identifier>
           <transport xmlns:nsn="urn:ietf:params:xml:ns:yang:ietf-netconf-subscribed-notifications">
@@ -16,7 +14,7 @@
           <stream>NETCONF</stream>
           <receivers>
             <receiver>
-			  <name>receiver1</name>
+	      <name>receiver1</name>
               <address>1.2.3.4</address>
             </receiver>
           </receivers>
