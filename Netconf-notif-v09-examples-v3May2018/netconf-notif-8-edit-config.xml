@@ -7,11 +7,12 @@
     <config>
       <subscriptions 
       xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"
-	  xmlns:nsn=
-    "urn:ietf:params:xml:ns:yang:ietf-netconf-subscribed-notifications">
+	  >
         <subscription>
           <identifier>22</identifier>
-          <nsn:transport>NETCONF</nsn:transport>
+          <transport xmlns:nsn="urn:ietf:params:xml:ns:yang:ietf-netconf-subscribed-notifications">
+	    nsn:netconf
+	  </transport>
           <stream>NETCONF</stream>
           <receivers>
             <receiver>

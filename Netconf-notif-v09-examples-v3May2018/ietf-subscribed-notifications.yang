@@ -901,13 +901,6 @@ module ietf-subscribed-notifications {
           subscription came from the 'filters' container.  Otherwise it 
           is populated in-line as part of the subscription.";
       }
-      // einarnn: Suggest this refinement, otherwise the event would
-      // need to include the transport leaf as well, which doesn't
-      // seem useful. Or maybe need to assess mandatory value in
-      // original grouping?
-      refine "transport" {
-        mandatory false;
-      }
     }
   }
   
