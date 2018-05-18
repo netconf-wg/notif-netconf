@@ -1,0 +1,19 @@
+<rpc-reply message-id="303"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <rpc-error>
+    <error-type>application</error-type>
+    <error-tag>operation-failed</error-tag>
+    <error-severity>error</error-severity>
+    <error-app-tag>
+        ietf-yang-push:period-unsupported 
+    </error-app-tag>
+    <error-info
+       xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-push">
+       <modify-subscription-datastore-error-info>
+         <period-hint>
+             3000
+         </period-hint>
+       </modify-subscription-datastore-error-info>
+    </error-info>
+  </rpc-error>
+</rpc-reply>

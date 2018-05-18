@@ -1,0 +1,7 @@
+<rpc message-id="103"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <delete-subscription
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <identifier>22</identifier>
+  </delete-subscription>
+</rpc> 
