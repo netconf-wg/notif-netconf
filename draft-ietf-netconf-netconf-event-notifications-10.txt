@@ -210,7 +210,7 @@ Internet-Draft                NETCONF-notif                    June 2018
    If the call home fails because the publisher receives receiver
    credentials which are subsequently declined per [RFC8071],
    Section 4.1, step S5 authentication, then that receiver MUST be
-   placed into the timeout state.
+   placed into the "timeout" state.
 
    If the call home fails to establish for any other reason, the
    publisher MUST NOT progress the receiver to the "active" state.
