@@ -1,4 +1,4 @@
-PRE-DRAFT 8-June-2018: 
+PRE-DRAFT 11-June-2018: 
  needs disposition on Kent's thoughts on Abstract & Intro
 -------------------------------------------------------------
 
@@ -6,13 +6,13 @@ PRE-DRAFT 8-June-2018:
 NETCONF                                                          E. Voit
 Internet-Draft                                             Cisco Systems
 Intended status: Standards Track                                A. Clemm
-Expires: December 10, 2018                                        Huawei
+Expires: December 13, 2018                                        Huawei
                                                       A. Gonzalez Prieto
                                                                   VMware
                                                        E. Nilsen-Nygaard
                                                              A. Tripathy
                                                            Cisco Systems
-                                                            June 8, 2018
+                                                           June 11, 2018
 
 
                 NETCONF Support for Event Notifications
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 10, 2018.
+   This Internet-Draft will expire on December 13, 2018.
 
 Copyright Notice
 
@@ -54,7 +54,7 @@ Copyright Notice
 
 
 
-Voit, et al.            Expires December 10, 2018               [Page 1]
+Voit, et al.            Expires December 13, 2018               [Page 1]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -110,7 +110,7 @@ Table of Contents
 
 
 
-Voit, et al.            Expires December 10, 2018               [Page 2]
+Voit, et al.            Expires December 13, 2018               [Page 2]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -166,7 +166,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018               [Page 3]
+Voit, et al.            Expires December 13, 2018               [Page 3]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -198,14 +198,14 @@ Internet-Draft                NETCONF-notif                    June 2018
    cases where a configured subscription has a receiver in the
    "connecting" state as described in
    [I-D.draft-ietf-netconf-subscribed-notifications], section 2.5.1, and
-   the "transport" for that subscription is "NETCONF", but no NETCONF
-   transport session exists to that receiver (or all existing NETCONF
-   transport sessions are currently supporting [RFC5277] subscriptions),
-   then the publisher MUST initiate a transport session via NETCONF call
-   home [RFC8071], section 4.1 to that receiver.  Until NETCONF
-   connectivity is established and a "subscription-started" state change
-   notification is successfully sent, that receiver MUST remain in
-   either the "connecting" or the "timeout" state.
+   the "transport" for that subscription is "nsn:netconf", but no
+   NETCONF transport session exists to that receiver (or all existing
+   NETCONF transport sessions are currently supporting [RFC5277]
+   subscriptions), then the publisher MUST initiate a transport session
+   via NETCONF call home [RFC8071], section 4.1 to that receiver.  Until
+   NETCONF connectivity is established and a "subscription-started"
+   state change notification is successfully sent, that receiver MUST
+   remain in either the "connecting" or the "timeout" state.
 
    If the call home fails because the publisher receives receiver
    credentials which are subsequently declined per [RFC8071],
@@ -222,7 +222,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018               [Page 4]
+Voit, et al.            Expires December 13, 2018               [Page 4]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -238,7 +238,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 6.  Notification Messages
 
    Notification messages transported over the NETCONF protocol will use
-   the one-way operations defined within [RFC5277], section 4.
+   the "notification" message defined within [RFC5277], section 4.
 
 7.  Dynamic Subscriptions and RPC Error Responses
 
@@ -278,7 +278,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018               [Page 5]
+Voit, et al.            Expires December 13, 2018               [Page 5]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -334,7 +334,7 @@ module ietf-netconf-subscribed-notifications {
 
 
 
-Voit, et al.            Expires December 10, 2018               [Page 6]
+Voit, et al.            Expires December 13, 2018               [Page 6]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -390,7 +390,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018               [Page 7]
+Voit, et al.            Expires December 13, 2018               [Page 7]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -446,7 +446,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018               [Page 8]
+Voit, et al.            Expires December 13, 2018               [Page 8]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -502,7 +502,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018               [Page 9]
+Voit, et al.            Expires December 13, 2018               [Page 9]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -558,7 +558,7 @@ A.2.1.  Establishing Dynamic Subscriptions
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 10]
+Voit, et al.            Expires December 13, 2018              [Page 10]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -614,7 +614,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 11]
+Voit, et al.            Expires December 13, 2018              [Page 11]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -670,7 +670,7 @@ A.2.2.  Modifying Dynamic Subscriptions
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 12]
+Voit, et al.            Expires December 13, 2018              [Page 12]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -726,7 +726,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 13]
+Voit, et al.            Expires December 13, 2018              [Page 13]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -782,7 +782,7 @@ A.2.3.  Deleting Dynamic Subscriptions
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 14]
+Voit, et al.            Expires December 13, 2018              [Page 14]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -838,7 +838,7 @@ A.3.1.  Creating Configured Subscriptions
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 15]
+Voit, et al.            Expires December 13, 2018              [Page 15]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -894,7 +894,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 16]
+Voit, et al.            Expires December 13, 2018              [Page 16]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -950,7 +950,7 @@ A.3.2.  Modifying Configured Subscriptions
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 17]
+Voit, et al.            Expires December 13, 2018              [Page 17]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -1006,7 +1006,7 @@ Internet-Draft                NETCONF-notif                    June 2018
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 18]
+Voit, et al.            Expires December 13, 2018              [Page 18]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -1062,7 +1062,7 @@ A.3.3.  Deleting Configured Subscriptions
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 19]
+Voit, et al.            Expires December 13, 2018              [Page 19]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -1118,7 +1118,7 @@ A.4.1.  subscription-started and subscription-modified
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 20]
+Voit, et al.            Expires December 13, 2018              [Page 20]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -1174,7 +1174,7 @@ A.4.3.  subscription-terminated and subscription-suspended
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 21]
+Voit, et al.            Expires December 13, 2018              [Page 21]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -1230,7 +1230,7 @@ B.5.  v05 to v06
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 22]
+Voit, et al.            Expires December 13, 2018              [Page 22]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -1286,7 +1286,7 @@ Authors' Addresses
 
 
 
-Voit, et al.            Expires December 10, 2018              [Page 23]
+Voit, et al.            Expires December 13, 2018              [Page 23]
 
 Internet-Draft                NETCONF-notif                    June 2018
 
@@ -1301,6 +1301,9 @@ Internet-Draft                NETCONF-notif                    June 2018
    Cisco Systems
 
    Email: ambtripa@cisco.com
+
+
+
 
 
 
