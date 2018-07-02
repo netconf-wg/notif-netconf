@@ -16,7 +16,6 @@
           <receivers>
             <receiver>
 			  <name>receiver1</name>
-              <address>1.2.3.4</address>
             </receiver>
           </receivers>
         </subscription>
