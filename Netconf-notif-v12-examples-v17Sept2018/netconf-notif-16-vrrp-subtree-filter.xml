@@ -1,0 +1,9 @@
+<rpc message-id="602" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <modify-subscription
+      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <id>99</id>
+    <stream-subtree-filter xmlns="urn:ietf:params:xml:ns:ietf-vrrp">
+     <vrrp-protocol-error-event/>
+    </stream-subtree-filter>
+  </modify-subscription>
+</rpc>

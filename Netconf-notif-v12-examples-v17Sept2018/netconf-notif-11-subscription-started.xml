@@ -1,0 +1,14 @@
+<notification xmlns=" urn:ietf:params:xml:ns:netconf:notification:1.0">
+  <eventTime>2007-09-01T10:00:00Z</eventTime>
+  <subscription-started 
+      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"
+	  xmlns:nsn=
+    "urn:ietf:params:xml:ns:yang:ietf-netconf-subscribed-notifications">
+    <id>39</id>
+    <nsn:transport>NETCONF</nsn:transport>
+    <stream-xpath-filter xmlns:ex="http://example.com/events">
+      /ex:foo
+    </stream-xpath-filter>
+    <stream>NETCONF</stream>
+  </subscription-started>
+</notification>

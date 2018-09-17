@@ -1,0 +1,6 @@
+<notification xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
+  <eventTime>2018-09-14T08:22:33.44Z</eventTime>
+  <vrrp-protocol-error-event xmlns="urn:ietf:params:xml:ns:ietf-vrrp">
+     <protocol-error-reason>checksum-error</protocol-error-reason>  
+  </vrrp-protocol-error-event>
+</notification>
