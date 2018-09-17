@@ -1,0 +1,59 @@
+module ietf-foo-subscribed-notifications {
+  yang-version 1.1;
+  namespace 
+    "urn:ietf:params:xml:ns:yang:ietf-foo-subscribed-notifications";
+
+  prefix fsn;
+
+  import ietf-subscribed-notifications { 
+    prefix sn;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+
+  organization "IETF NETCONF (Network Configuration) Working Group";
+  contact
+    "WG Web:   <http:/tools.ietf.org/wg/netconf/>
+     WG List:  <mailto:netconf@ietf.org>";
+
+  description
+    "Defines 'foo' as a supported type of configured transport for  
+    subscribed event notifications.";
+  
+  revision 2018-08-15 {
+    description
+      "Initial version";
+    reference 
+    "RFC XXXX: Customized Subscriptions to a Publisher's Event Streams";
+  }
+  
+  identity foo {
+    base sn:transport;
+    description
+      "Transport type 'foo' is available for use as a configured   
+       subscription transport protocol for subscribed notifications.";
+  }
+
+  augment "/sn:subscriptions/sn:subscription/sn:receivers/sn:receiver" {
+    when 'derived-from(../../../transport, "fsn:foo")';   
+    description
+      "This augmentation makes 'foo' specific transport parameters  
+      available  for a receiver.";
+    leaf address {
+      type inet:host;
+      mandatory true;
+      description
+        "Specifies the address to use for messages destined to a 
+        receiver.";     
+    }
+    leaf port {
+      type inet:port-number;
+      mandatory true;
+      description
+        "Specifies the port number to use for messages destined to a 
+        receiver.";     
+    }
+  }
+
+}
