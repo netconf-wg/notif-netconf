@@ -4,8 +4,8 @@
        xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"
        xmlns:yp="urn:ietf:params:xml:ns:yang:ietf-yang-push">
     <id>23</id>
-    <yp:datastore-xpath-filter xmlns="http://example.com/datastore"> 
-        /interfaces-state/interface/oper-status
+    <yp:datastore-xpath-filter xmlns:ds="http://example.com/datastore"> 
+        /ds:foo/ds:bar
     </yp:datastore-xpath-filter>
     <yp:periodic>
       <yp:period>500</yp:period>

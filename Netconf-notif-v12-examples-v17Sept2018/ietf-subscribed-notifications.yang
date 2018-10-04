@@ -543,9 +543,10 @@ module ietf-subscribed-notifications {
         description
           "Adds additional objects which can be modified by RPC.";
         leaf stream {
-          type stream-ref {
-            require-instance false;
-          }
+	  type string;
+          //type stream-ref {
+          //  require-instance false;
+          //}
           mandatory true;
           description
             "Indicates the event stream to be considered for
@@ -635,7 +636,7 @@ module ietf-subscribed-notifications {
     output {
       leaf id {
         type subscription-id;
-        mandatory true;
+        //mandatory true;
         description
           "Identifier used for this subscription.";
       }

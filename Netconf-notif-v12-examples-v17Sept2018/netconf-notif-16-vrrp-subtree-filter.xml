@@ -2,8 +2,8 @@
   <modify-subscription
       xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
     <id>99</id>
-    <stream-subtree-filter xmlns="urn:ietf:params:xml:ns:ietf-vrrp">
-     <vrrp-protocol-error-event/>
+    <stream-subtree-filter>
+     <vrrp-protocol-error-event xmlns="urn:ietf:params:xml:ns:ietf-vrrp"/>
     </stream-subtree-filter>
   </modify-subscription>
 </rpc>
