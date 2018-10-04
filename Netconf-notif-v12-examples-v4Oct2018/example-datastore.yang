@@ -1,0 +1,9 @@
+module example-datastore {
+  namespace "http://example.com/datastore";
+  prefix ds;
+  container foo {
+    leaf bar {
+      type string;
+    }
+  }
+} 

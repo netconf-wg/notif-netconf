@@ -1,0 +1,9 @@
+module example {
+  namespace "http://example.com/events";
+  prefix ex;
+  container foo {
+    leaf bar {
+      type string;
+    }
+  }
+} 
