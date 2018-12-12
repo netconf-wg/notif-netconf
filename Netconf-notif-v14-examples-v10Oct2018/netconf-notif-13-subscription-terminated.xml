@@ -1,0 +1,11 @@
+<notification
+  xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
+  <eventTime>2007-09-01T10:00:00Z</eventTime>
+  <subscription-terminated
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <id>39</id>
+    <reason>
+       suspension-timeout
+    </reason>
+  </subscription-terminated>
+</notification>

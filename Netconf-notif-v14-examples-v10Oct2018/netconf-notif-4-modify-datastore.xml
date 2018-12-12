@@ -1,0 +1,14 @@
+<rpc message-id="303"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <modify-subscription
+       xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"
+       xmlns:yp="urn:ietf:params:xml:ns:yang:ietf-yang-push">
+    <id>23</id>
+    <yp:datastore-xpath-filter xmlns:ds="http://example.com/datastore">  
+        /ds:foo/ds:bar
+    </yp:datastore-xpath-filter>
+    <yp:periodic>
+      <yp:period>500</yp:period>
+    </yp:periodic> 
+  </modify-subscription>
+</rpc>
