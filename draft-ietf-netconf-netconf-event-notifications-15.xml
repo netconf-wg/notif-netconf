@@ -52,7 +52,7 @@
             </address>
         </author>     
 
-        <date day="13" month="December" year="2018"/>
+        <date day="18" month="December" year="2018"/>
 
         <area>Operations &amp; Management</area>
 
@@ -171,7 +171,7 @@
       ---------------------- ------------------------------------         
       target: event stream   modify-subscription-stream-error-info
       target: datastore      modify-subscription-datastore-error-info
-
+      
       The yang-data included within "error-info" SHOULD NOT include the
       optional leaf "error-reason", as such a leaf would be redundant
       with information that is already placed within the
@@ -664,7 +664,7 @@
     
     <section title="v14 to v15">
       <t><list style="symbols">   
-        <t>Per Kent's request, added name attribute to artwork which need to be extracted.</t>
+        <t>Per Kent's request, added name attribute to artwork.  This would be needed for an automated extraction.</t>
       </list></t>
     </section>    
     <section title="v13 to v14">
