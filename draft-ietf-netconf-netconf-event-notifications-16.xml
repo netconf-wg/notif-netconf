@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc toc="yes"?>
+<?rfc tocompact="yes"?>
+<?rfc tocdepth="2"?>
+<?rfc tocindent="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="yes"?>
+<rfc category="std" docName="draft-ietf-netconf-netconf-event-notifications-16"
+     ipr="trust200902">
+<front>
+    <title abbrev="NETCONF-notif">Dynamic subscription to YANG Events and Datastores over NETCONF</title>
+
+        <author fullname="Eric Voit" initials="E." surname="Voit">
+            <organization>Cisco Systems</organization>
+            <address>
+                <email>evoit@cisco.com</email>
+            </address>
+        </author>
+        
+        <author fullname="Alexander Clemm" initials="A" surname="Clemm">
+            <organization>Huawei</organization>
+            <address>
+                <email>ludwig@clemm.org</email>
+            </address>
+        </author>
+
+        <author fullname="Alberto Gonzalez Prieto" initials="A"
+            surname="Gonzalez Prieto">
+            <organization>Microsoft</organization>
+            <address>
+                <email>alberto.gonzalez@microsoft.com</email>
+            </address>
+        </author>
+        
+        <author fullname="Einar Nilsen-Nygaard" initials="E"
+            surname="Nilsen-Nygaard">
+            <organization>Cisco Systems</organization>
+            <address>
+                <email>einarnn@cisco.com</email>
+            </address>
+        </author>
+      
+        <author fullname="Ambika Prasad Tripathy" initials="A" surname="Tripathy">
+            <organization>Cisco Systems</organization>
+            <address>
+                <email>ambtripa@cisco.com</email>
+            </address>
+        </author>     
+
+        <date day="8" month="January" year="2019"/>
+
+        <area>Operations &amp; Management</area>
+
+        <workgroup>NETCONF</workgroup>
+
+        <keyword>Draft</keyword>
+
+    <abstract>
+    
+      <t>This document provides a NETCONF binding to the dynamic subscription capability of both subscribed notifications and YANG push.</t>
+      
+      <t>RFC Editor note: please replace the four references to pre-RFC normative drafts with the actual assigned RFC numbers.</t>
+        
+    </abstract>
+</front>
+
+<middle>
+  <section title="Introduction">
+       
+    <t>This document provides a binding for events streamed over the NETCONF protocol <xref target="RFC6241"/> for dynamic subscriptions as defined in <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/>. In addition, as <xref target="I-D.ietf-netconf-yang-push"/> is itself built upon <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/>, this document enables a NETCONF client to request via a dynamic subscription and receive updates from a YANG datastore located on a NETCONF server.</t>
+    
+  </section>
+
+  <section title="Terminology">
+
+    <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.</t>
+            
+    <t>The following terms are defined in <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/>: dynamic subscription, event stream, notification message, publisher, receiver, subscriber, subscription. No additional terms are defined.</t> 
+
+  </section>
+
+
+  <section title="Compatibility with RFC-5277's create-subscription">
+     <t>A publisher is allowed to concurrently support dynamic subscription RPCs of <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/> at the same time as <xref target="RFC5277"/>'s "create-subscription" RPC.  However a single NETCONF transport session cannot support both this specification and a subscription established by <xref target="RFC5277"/>'s "create-subscription" RPC. To protect against any attempts to use a single NETCONF transport session in this way:</t>
+      
+     <t><list style="symbols">
+     
+       <t>A solution must reply with the <xref target="RFC6241"/> error "operation-not-supported" if a "create-subscription" RPC is received on a NETCONF session where an <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/> established subscription exists.</t>
+       
+       <t>A solution must reply with the <xref target="RFC6241"/> error "operation-not-supported" if an "establish-subscription" request has been received on a NETCONF session where the "create-subscription" RPC has successfully <xref target="RFC5277"/> created a subscription. </t> 
+       
+
+     </list></t>
+
+     <t>If a publisher supports this specification but not subscriptions via <xref target="RFC5277"/>, the publisher MUST NOT advertise "urn:ietf:params:netconf:capability:notification:1.0".</t>
+     
+  </section>
+  
+  
+  <section title="Mandatory XML, event stream and datastore support">
+    
+    <t>The "encode-xml" feature of <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/> MUST be supported.  This indicates that XML is a valid encoding for RPCs, state change notifications, and subscribed content.</t>
+    
+    <t>A NETCONF publisher supporting event stream subscription via <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/> MUST support the "NETCONF" event stream identified in that document.</t>
+
+  </section>
+  
+  <section title="NETCONF connectivity and the Dynamic Subscriptions">
+  
+    <t>For a dynamic subscription, if the NETCONF session involved with the "establish-subscription" terminates the subscription MUST be terminated.</t>
+      
+    <t>For a dynamic subscription, any "modify-subscription", "delete-subscription", or "resynch-subscription" RPCs MUST be sent using the same NETCONF session upon which the referenced subscription was established.</t>
+      
+        
+  </section>
+  
+  <section title="Notification Messages">
+    <t>Notification messages transported over the NETCONF protocol MUST be encoded in a &lt;notification&gt; message as defined within <xref target="RFC5277"/>, Section 4. And per <xref target="RFC5277"/>'s "eventTime" object definition, the "eventTime" MUST be populated with the event occurrence time.</t>
+    
+    <t>For dynamic subscriptions, all notification messages MUST use the NETCONF transport session used by the "establish-subscription" RPC.</t>
+    
+  </section>
+  
+  <section title="Dynamic Subscriptions and RPC Error Responses">
+    <t>Management of dynamic subscriptions occurs via RPCs as defined in 
+    <xref target="I-D.ietf-netconf-yang-push"/> and <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/>.  When an RPC error occurs, the NETCONF RPC reply MUST include an "rpc-error" element per <xref target="RFC6241"/> with the error information populated as follows:
+     <list style="symbols">
+      <t>an "error-type" node of "application".</t>
+
+      <t>an "error-tag" node of "operation-failed".</t>
+
+      <t>an "error-severity" of "error" (this MAY but does not
+      have to be included). </t>
+
+      <t>an "error-app-tag" node with the value being a string that corresponds to
+      an identity associated with the error, as defined in 
+      <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/> section 2.4.6 for general subscriptions, 
+      and <xref target="I-D.ietf-netconf-yang-push"/> Appendix A.1, for datastore subscriptions. The specific identity to use depends on the RPC for which the error occurred.  Each error identity will be inserted as the "error-app-tag"  following the form &lt;modulename&gt;:&lt;identityname&gt;.  An example of such as valid encoding would be "ietf-subscribed-notifications:no-such-subscription". Viable errors for different RPCs are as follows:</t>
+    </list></t>
+    
+    <figure align="left">
+            <artwork><![CDATA[
+         RPC                     use base identity
+         ----------------------  ----------------------------
+         establish-subscription  establish-subscription-error     
+         modify-subscription     modify-subscription-error
+         delete-subscription     delete-subscription-error    
+         kill-subscription       kill-subscription-error
+         resynch-subscription    resynch-subscription-error
+            ]]></artwork>
+    </figure>
+    
+    <t><list style="symbols">
+      <t>In case of error responses to an "establish-subscription" or "modify-subscription" request there is the option of including an "error-info" node.  This node may contain XML-encoded data with hints for parameter settings that might lead to successful RPC requests in the future.   Following are the yang-data structures from <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/> 
+      and <xref target="I-D.ietf-netconf-yang-push"/>  which may be returned:</t>
+    </list></t>
+    
+    <figure align="left">
+            <artwork><![CDATA[    
+      establish-subscription returns hints in yang-data structure
+      ---------------------- ------------------------------------         
+      target: event stream   establish-subscription-stream-error-info
+      target: datastore      establish-subscription-datastore-error-info
+            
+      modify-subscription    returns hints in yang-data structure
+      ---------------------- ------------------------------------         
+      target: event stream   modify-subscription-stream-error-info
+      target: datastore      modify-subscription-datastore-error-info
+      
+      The yang-data included within "error-info" SHOULD NOT include the
+      optional leaf "error-reason", as such a leaf would be redundant
+      with information that is already placed within the
+      "error-app-tag".
+            ]]></artwork>
+    </figure>  
+    
+    <t>In case of an rpc error resulting from a "delete-subscription", "kill-subscription", or "resynch-subscription" request, no "error-info" needs to be included, as the "subscription-id" is the only RPC input parameter and no hints regarding this RPC input parameters need to be provided.</t>
+    
+  </section>
+ 
+  <section title="Security Considerations">
+            
+    <t>If a malicious or buggy NETCONF subscriber sends a number of establish-subscription requests, then these subscriptions accumulate and may use up system resources.  In such a situation, subscriptions MAY be terminated by terminating the underlying NETCONF session.  The publisher MAY also suspend or terminate a subset of the active subscriptions on that NETCONF session.</t>
+    
+  </section>
+
+  <section title="IANA Considerations">
+            
+    <t>This document has no actions for IANA.</t>
+    
+  </section>
+  
+  <section title = "Acknowledgments">
+    <t>We wish to acknowledge the helpful contributions, comments, and suggestions that were received from: Andy Bierman, Yan Gang, Sharon Chisholm, Hector Trevino, Peipei Guo, Susan Hares, Tim Jenkins, Balazs Lengyel, Martin Bjorklund, Mahesh Jethanandani, Kent Watsen, Qin Wu, and Guangying Zheng.</t>
+  </section>
+        
+  <section title = "Notes to the RFC Editor">     
+        
+    <t>This section can be removed by the RFC editor after the requests have been performed.</t>   
+
+    <t>RFC 6241 needs to be updated based on the needs of this draft.  RFC-6241 section 1.2 bullet "(2)" targets RFC-5277 (actually it identifies RFC 5717, but that was an error fixed after RFC publication).  Anyway the current phrasing in RFC-5277 says that a notification message can only be sent after a successful "create-subscription".  Therefore the reference text must be modified to also allow notification messages be sent after a successful "establish-subscription".  Proposed text for bullet (2) of RFC-6241 would be:</t>
+    <figure align="left">
+            <artwork><![CDATA[  
+   (2)  The Messages layer provides a simple, transport-independent
+        framing mechanism for encoding RPCs and notifications.
+        Section 4 documents the RPC messages, [RFC5277] documents
+        Notifications sent as a result of a <create-subscription> RPC,
+        and [RFC xxxx] documents Notifications sent as a result of
+        an <establish-subscription> RPC.  
+    
+    (where xxxx is replaced with this RFC number)
+            ]]></artwork>
+    </figure>     
+
+  </section>        
+        
+        
+</middle>
+    
+<back>
+  <references title="Normative References">
+      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.5277"?>
+      <?rfc include="reference.RFC.6241"?>
+      <?rfc include="reference.RFC.8174"?>
+      
+      <reference anchor="I-D.ietf-netconf-yang-push"
+                 target="https://datatracker.ietf.org/doc/draft-ietf-netconf-yang-push/">
+        <front>
+          <title>YANG Datastore Subscription</title>
+          <author fullname="A Clemm" initials="Alexander" surname="Clemm"></author>
+          <author fullname="E Voit" initials="Eric" surname="Voit"></author>
+          <author fullname="A Gonzalez Prieto" initials="Alberto" surname="Gonzalez Prieto"></author>
+          <author fullname="Ambika Prasad Tripathy" initials="A" surname="Tripathy"></author>
+          <author fullname="Einar Nilsen-Nygaard" initials="E" surname="Nilsen-Nygaard"></author>
+          <author fullname="Andy Bierman" initials="A" surname="Bierman"></author>
+          <author fullname="B Lengyel" initials="B" surname="Lengyel"></author>
+          <date month="September" year="2018"/>
+        </front>
+      </reference>
+        
+
+      <reference anchor="I-D.draft-ietf-netconf-subscribed-notifications"
+                 target="https://datatracker.ietf.org/doc/draft-ietf-netconf-subscribed-notifications/">
+        <front>
+          <title>Customized Subscriptions to a Publisher's Event Streams</title>
+          <author fullname="Eric Voit" initials="E" surname="Voit">
+            <organization/>
+          </author>
+          <author fullname="Alexander Clemm" initials="A" surname="Clemm">
+            <organization/>
+          </author>
+          <author fullname="Alberto Gonzalez Prieto" initials="A"
+                  surname="Gonzalez Prieto">
+            <organization/>
+          </author>
+          <author fullname="Ambika Prasad Tripathy" initials="A"
+                  surname="Tripathy">
+            <organization/>
+          </author>
+          <author fullname="Einar Nilsen-Nygaard" initials="E"
+                  surname="Nilsen-Nygaard">
+            <organization/>
+          </author>
+          <date month="September" year="2018"/>
+        </front>
+      </reference>  
+      
+    </references> 
+    
+    <references title="Informative References">
+      <?rfc include="reference.RFC.8347"?>
+      
+      <reference anchor="XPATH"
+                 target="http://www.w3.org/TR/1999/REC-xpath-19991116">
+        <front>
+          <title>XML Path Language (XPath) Version 1.0</title>
+          <author fullname="J Clark" initials="J" surname="Clark"></author>
+          <author fullname="S DeRose" initials="S" surname="DeRose"></author>
+          <date month="November" year="1999"/>
+        </front>
+      </reference> 
+      
+      
+    </references> 
+
+  <section title="Examples">
+  
+    <t>This section is non-normative.</t>
+    
+    <section title="Event Stream Discovery">
+
+        <t>As defined in <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/> an event stream exposes a continuous set of events available for subscription.  A NETCONF client can retrieve the list of available event streams from a NETCONF publisher using the "get" operation against the top-level container "/streams" defined in <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/> Section 3.1.</t>
+            
+        <t>The following example illustrates the retrieval of the list of available event streams:</t>
+            
+        <figure align="center" anchor="get-streams" title="Get streams request">       
+            <artwork name="ex-get-streams.xml"><![CDATA[
+<rpc message-id="101"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <get>
+    <filter type="subtree">
+      <streams
+     xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"/>
+    </filter>
+  </get>
+</rpc>
+            ]]></artwork>
+        </figure>
+            
+        <t>After such a request, the NETCONF publisher returns a list of event streams available, as well as additional information which might exist in the container. </t>
+
+    </section>
+
+    <section title="Dynamic Subscriptions">
+    
+    
+      <section title="Establishing Dynamic Subscriptions">
+      
+        <t>The following figure shows two successful "establish-subscription" RPC requests as per <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/>.  The first request is given a subscription "id" of 22, the second, an "id" of 23.</t>
+
+        <figure anchor = "mess-flow-establishment" 
+          title="Multiple subscriptions over a NETCONF session">
+          <artwork><![CDATA[
+   +------------+                 +-----------+
+   | Subscriber |                 | Publisher |
+   +------------+                 +-----------+
+         |                              |
+         |    Capability Exchange       |
+         |<---------------------------->|
+         |                              |
+         |                              |
+         |    establish-subscription    |
+         |----------------------------->|  (a)
+         | RPC Reply: OK, id = 22       |
+         |<-----------------------------|  (b)
+         |                              |
+         | notification message (for 22)|
+         |<-----------------------------|
+         |                              |
+         |                              |
+         |    establish-subscription    |
+         |----------------------------->|
+         | notification message (for 22)|
+         |<-----------------------------|
+         | RPC Reply: OK, id = 23       |
+         |<-----------------------------|
+         |                              |
+         |                              |
+         | notification message (for 22)|
+         |<-----------------------------|
+         | notification message (for 23)|
+         |<-----------------------------|
+         |                              |                
+          ]]></artwork>
+        </figure> 
+    
+        <t>To provide examples of the information being transported, example messages for interactions (a) and (b) in  <xref target="mess-flow-establishment"/> are detailed below:</t>
+    
+        <figure align="center" anchor="establish-subs" title="establish-subscription request (a)"> 
+          <artwork name="ex-establish-subscription.xml"><![CDATA[
+<rpc message-id="102" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <establish-subscription 
+      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <stream>NETCONF</stream>
+    <stream-xpath-filter xmlns:ds="http://example.com/events">
+      /ds:foo/
+    </stream-xpath-filter>
+    <dscp>10</dscp>
+  </establish-subscription>
+</rpc>
+            ]]></artwork>
+        </figure>
+        
+        <t>As NETCONF publisher was able to fully satisfy the request (a), the publisher sends the subscription "id" of the accepted subscription within message (b):</t>
+                
+        <figure align="center" anchor="positive-establish-subs" title="establish-subscription success (b)">       
+          <artwork name="ex-establish-subscription-resp.xml"><![CDATA[
+<rpc-reply message-id="102" 
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <id 
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    22
+  </id>
+</rpc-reply>
+           ]]></artwork>
+        </figure>               
+
+        <t>If the NETCONF publisher had not been able to fully satisfy the request, or subscriber has no authorization to establish the subscription, the publisher would have sent an RPC error response. For instance, if the "dscp" value of 10 asserted by the subscriber in <xref target="establish-subs"/> proved unacceptable, the publisher may have returned:</t>
+            
+        <figure align="center" anchor="negative-establish-subs" title="an unsuccessful establish subscription">       
+          <artwork name="ex-establish-subscription-err-resp.xml"><![CDATA[
+<rpc-reply message-id="102" 
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <rpc-error>
+   <error-type>application</error-type>
+   <error-tag>operation-failed</error-tag>
+   <error-severity>error</error-severity>
+   <error-app-tag>
+     ietf-subscribed-notifications:dscp-unavailable
+   </error-app-tag>    
+  </rpc-error>
+</rpc-reply>
+          ]]></artwork>
+        </figure> 
+        
+        <t>The subscriber can use this information in future attempts to establish a subscription.</t>
+        
+      </section>
+      
+      <section title="Modifying Dynamic Subscriptions">
+      
+        <t>An existing subscription may be modified.  The following exchange shows a negotiation of such a modification via several exchanges between a subscriber and a publisher.  This negotiation consists of a failed RPC modification request/response, followed by a successful one.</t>
+    
+        <figure anchor = "mess-flow-subs-modification"
+                title="Interaction model for successful subscription modification">
+          <artwork><![CDATA[                  
+   +------------+                 +-----------+
+   | Subscriber |                 | Publisher |
+   +------------+                 +-----------+
+         |                              |
+         | notification message (for 23)|
+         |<-----------------------------|
+         |                              |
+         | modify-subscription (id = 23)|
+         |----------------------------->|  (c)
+         | RPC error (with hint)        |
+         |<-----------------------------|  (d)
+         |                              |
+         | modify-subscription (id = 23)|
+         |----------------------------->|
+         | RPC Reply: OK                |
+         |<-----------------------------|
+         |                              |
+         | notification message (for 23)|
+         |<-----------------------------|
+         |                              |          
+          ]]></artwork>
+        </figure>    
+        
+        <t>If the subscription being modified in <xref target="mess-flow-subs-modification"/> is a datastore subscription as per <xref target="I-D.ietf-netconf-yang-push"/>, the modification request made in (c) may look like that shown in <xref target="simple-modify-subs"/>.  As can be seen, the modifications being attempted are the application of a new XPath filter as well as the setting of a new periodic time interval.</t>
+        
+        <figure align="center" anchor="simple-modify-subs" title="Subscription modification request (c)">
+          <artwork name="ex-modify-subscription.xml"><![CDATA[
+<rpc message-id="303"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <modify-subscription
+       xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"
+       xmlns:yp="urn:ietf:params:xml:ns:yang:ietf-yang-push">
+    <id>23</id>
+    <yp:datastore-xpath-filter xmlns:ds="http://example.com/datastore">  
+        /ds:foo/ds:bar
+    </yp:datastore-xpath-filter>
+    <yp:periodic>
+      <yp:period>500</yp:period>
+    </yp:periodic> 
+  </modify-subscription>
+</rpc>
+          ]]></artwork>
+        </figure>
+    
+        <t>If the NETCONF publisher can satisfy both changes, the publisher sends a positive result for the RPC. If the NETCONF publisher cannot satisfy either of the proposed changes, the publisher sends an RPC error response (d).  The following is an example RPC error response for (d) which includes a hint. This hint is an alternative time period value which might have resulted in a successful modification:</t>
+        
+        <figure align="center" anchor="negative-modify-subs" title="Modify subscription failure with hint (d)">       
+          <artwork name="ex-modify-subscription-err-resp.xml"><![CDATA[
+<rpc-reply message-id="303"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <rpc-error>
+    <error-type>application</error-type>
+    <error-tag>operation-failed</error-tag>
+    <error-severity>error</error-severity>
+    <error-app-tag>
+        ietf-yang-push:period-unsupported 
+    </error-app-tag>
+    <error-info>
+      <modify-subscription-datastore-error-info
+          xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-push">
+        <period-hint>
+            3000
+        </period-hint>
+      </modify-subscription-datastore-error-info>
+    </error-info>
+  </rpc-error>
+</rpc-reply>
+          ]]></artwork>
+        </figure>        
+   
+     
+      </section>
+    
+      <section title="Deleting Dynamic Subscriptions">
+      
+      <t>The following demonstrates deleting a subscription.  This subscription may have been to either a stream or a datastore.</t>
+                    
+      <figure align="center" anchor="simple-delete-subs" title="Delete subscription"> 
+        <artwork name="ex-delete-subscription.xml"><![CDATA[
+<rpc message-id="103"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <delete-subscription
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <id>22</id>
+  </delete-subscription>
+</rpc> 
+        ]]></artwork>
+      </figure>
+                
+      <t>If the NETCONF publisher can satisfy the request, the publisher replies with success to the RPC request.</t>
+            
+
+      <t>If the NETCONF publisher cannot satisfy the request, the publisher sends an error-rpc element indicating the modification didn't work. <xref target="negative-delete-subs"/> shows a valid response for existing valid subscription "id", but that subscription "id" was created on a different NETCONF transport session:</t>
+                
+      <figure align="center" anchor="negative-delete-subs" title="Unsuccessful delete subscription">       
+        <artwork name="ex-delete-subscription-err-resp.xml"><![CDATA[
+<rpc-reply message-id="103"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <rpc-error>
+    <error-type>application</error-type>
+    <error-tag>operation-failed</error-tag>
+    <error-severity>error</error-severity>
+    <error-app-tag>
+        ietf-subscribed-notifications:no-such-subscription
+    </error-app-tag>
+  </rpc-error>
+</rpc-reply>
+          ]]></artwork>
+        </figure>     
+    
+      </section>
+    
+    </section>
+
+    <section title="Subscription State Notifications">
+    
+      <t>A publisher will send subscription state notifications for dynamic subscriptions according to the definitions within <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/>.</t>
+
+      <section title="subscription-modified">
+      
+                  
+        <t>As per Section 2.7.2 of <xref target="I-D.draft-ietf-netconf-subscribed-notifications"/>, a "subscription-modified" might be sent over NETCONF if the definition of a configured filter changes. A subscription state notification encoded in XML would look like:</t>    
+                        
+        <figure align="center" anchor="subscription-modified-ctrl-plane-notif" 
+                title="subscription-modified subscription state notification">       
+          <artwork name="ex-subscription-modified-notification.xml"><![CDATA[
+<notification xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
+  <eventTime>2007-09-01T10:00:00Z</eventTime>
+  <subscription-modified 
+      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <id>39</id>
+    <stream-xpath-filter xmlns:ex="http://example.com/events">
+      /ex:foo
+    </stream-xpath-filter>
+    <stream>NETCONF</stream>
+  </subscription-modified>
+</notification>
+           ]]></artwork>
+        </figure>
+    
+      </section>
+      
+      <section title="subscription-resumed, and replay-complete">
+    
+        <t>A "subscription-resumed" would look like:</t>    
+                
+        <figure align="center" 
+                anchor="subscription-resumed" 
+                title="subscription-resumed notification in XML">       
+          <artwork name="ex-subscription-resumed-notification.xml"><![CDATA[
+<notification
+  xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
+  <eventTime>2007-09-01T10:00:00Z</eventTime>
+  <subscription-resumed
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <id>39</id>
+  </subscription-resumed>
+</notification>
+           ]]></artwork>
+        </figure>
+                
+        <t>The "replay-complete" is virtually identical, with "subscription-resumed" simply being replaced by "replay-complete".</t>
+    
+      </section>
+    
+      <section title="subscription-terminated and subscription-suspended">
+
+        <t>A "subscription-terminated" would look like:</t>    
+                
+        <figure align="center" 
+                anchor="subscription-terminated" 
+                title="subscription-terminated subscription state notification">       
+                    <artwork name="ex-subscription-terminated-notification.xml"><![CDATA[
+<notification
+  xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
+  <eventTime>2007-09-01T10:00:00Z</eventTime>
+  <subscription-terminated
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <id>39</id>
+    <reason>
+       suspension-timeout
+    </reason>
+  </subscription-terminated>
+</notification>
+          ]]></artwork>
+        </figure>
+                
+        <t>The "subscription-suspended" is virtually identical, with "subscription-terminated" simply being replaced by "subscription-suspended".</t>
+ 
+      </section>
+
+    </section>
+    
+    <section title="Filter Examples">
+    
+      <t>This section provides examples which illustrate both XPath and subtree methods of filtering event record contents.  The examples are based on the YANG notification "vrrp-protocol-error-event" as defined per the ietf-vrrp.yang model within <xref target="RFC8347"/>.  Event records based on this specification which are generated by the publisher might appear as:</t>
+
+      <figure align="center" 
+              anchor="VRRP-notification" 
+              title="RFC 8347 (VRRP) - Example Notification">       
+                  <artwork name="ex-vrrp-notification.xml"><![CDATA[
+<notification xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
+  <eventTime>2018-09-14T08:22:33.44Z</eventTime>
+  <vrrp-protocol-error-event 
+       xmlns="urn:ietf:params:xml:ns:yang:ietf-vrrp">
+     <protocol-error-reason>checksum-error</protocol-error-reason>  
+  </vrrp-protocol-error-event>
+</notification>
+         ]]></artwork>
+      </figure>
+
+      <t>Suppose a subscriber wanted to establish a subscription which only passes instances of event records where there is a "checksum-error" as part of a VRRP protocol event.  Also assume the publisher places such event records into the NETCONF stream.  To get a continuous series of matching event records, the subscriber might request the application of an XPath filter against the NETCONF stream.  An "establish-subscription" RPC to meet this objective might be:</t>
+
+      <figure align="center" 
+              anchor="VRRP-XPATH" 
+              title="Establishing a subscription error reason via XPath">       
+                  <artwork name="ex-establish-subscription-xpath.xml"><![CDATA[
+<rpc message-id="601" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <establish-subscription
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <stream>NETCONF</stream>
+    <stream-xpath-filter xmlns="urn:ietf:params:xml:ns:yang:ietf-vrrp">
+      /vrrp-protocol-error-event[
+         vrrp:protocol-error-reason="vrrp:checksum-error"]
+    </stream-xpath-filter>
+  </establish-subscription>
+</rpc>
+         ]]></artwork>
+      </figure>
+
+      <t>For more examples of XPath filters, see <xref target="XPATH"/>.</t>
+
+      <t>Suppose the "establish-subscription" in <xref target="VRRP-XPATH"/> was accepted. And suppose later a subscriber decided they wanted to broaden this subscription cover to all VRRP protocol events (i.e., not just those with a "checksum error").  The subscriber might attempt to modify the subscription in a way which replaces the XPath filter with a subtree filter which sends all VRRP protocol events to a subscriber. Such a "modify-subscription" RPC might look like:</t>
+
+      <figure align="center" 
+              anchor="VRRP-Subtree" 
+              title="">       
+                  <artwork name="ex-establish-subscription-subtree.xml"><![CDATA[ 
+<rpc message-id="602" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <modify-subscription
+     xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+    <id>99</id>
+    <stream-subtree-filter>
+     <vrrp-protocol-error-event 
+            xmlns="urn:ietf:params:xml:ns:yang:ietf-vrrp"/>
+    </stream-subtree-filter>
+  </modify-subscription>
+</rpc>
+         ]]></artwork>
+      </figure>
+
+      <t>For more examples of subtree filters, see <xref target="RFC6241"/>, section 6.4.</t>
+     
+    </section>   
+    
+  </section>
+    
+  <section title="Changes between revisions">
+    <t>(To be removed by RFC editor prior to publication)</t>
+    
+    <section title="v15 to v16">
+      <t><list style="symbols">   
+        <t>During the shepherd review, two clarifications were requested which do not impact the technical details of this document.  These clarifications were: (a) further describing that dynamic subscriptions can have state change notifications, and (b) more details about the recommended text refinement desired for RFC6241.</t>
+      </list></t>
+    </section>
+    <section title="v14 to v15">
+      <t><list style="symbols">   
+        <t>Per Kent's request, added name attribute to artwork.  This would be needed for an automated extraction.</t>
+      </list></t>
+    </section>    
+    <section title="v13 to v14">
+      <t><list style="symbols">   
+        <t>Title change.</t>
+      </list></t>
+    </section>    
+    <section title="v11 to v13">
+      <t><list style="symbols">                
+        <t>Subscription identifier renamed to id.</t>
+        <t>Appendix A.4 for filter examples</t>
+        <t>for v13, Tweak of example to /foo/bar</t>
+      </list></t>
+    </section>
+    <section title="v10 to v11">
+      <t><list style="symbols">                
+        <t>Configured removed.</t>
+      </list></t>
+    </section>
+    <section title="v09 to v10">
+      <t><list style="symbols">                
+        <t>Tweaks to examples and text.</t>
+        <t>Downshifted state names.</t>
+        <t>Removed address from examples.</t>
+      </list></t>
+    </section>
+    <section title="v08 to v09">
+      <t><list style="symbols">                
+        <t>Tweaks based on Kent's comments.</t>
+        <t>Updated examples in Appendix A.  And updates to some object names based on changes in the subscribed-notifications draft.</t>
+        <t>Added a YANG model for the NETCONF identity.</t>
+      </list></t>
+    </section>
+    <section title="v07 to v08">
+      <t><list style="symbols">                
+        <t>Tweaks and clarification on :interleave.</t>
+      </list></t>
+    </section>
+    <section title="v06 to v07">
+      <t><list style="symbols">                
+        <t>XML encoding and operational datastore mandatory.</t>
+        <t>Error mechanisms and examples updated.</t>
+      </list></t>
+    </section>
+    <section title="v05 to v06">
+      <t><list style="symbols">                
+        <t>Moved examples to appendices</t>
+        <t>All examples rewritten based on namespace learnings</t>
+        <t>Normative text consolidated in front</t>
+        <t>Removed all mention of JSON</t>
+        <t>Call home process detailed</t>
+        <t>Note: this is a major revision attempting to cover those comments received from two week review.</t>
+      </list></t>
+    </section>
+    <section title="v03 to v04">
+      <t><list style="symbols">                
+        <t>Added additional detail to "configured subscriptions"</t>
+        <t>Added interleave capability</t>
+        <t>Adjusted terminology to that in draft-ietf-netconf-subscribed-notifications</t>
+        <t>Corrected namespaces in examples</t>
+      </list></t>
+    </section>
+    <section title="v01 to v03">
+      <t><list style="symbols">
+        <t>Text simplifications throughout</t>
+        <t>v02 had no meaningful changes</t>
+      </list></t>
+    </section>
+    <section title="v00 to v01">
+      <t><list style="symbols">
+        <t>Added Call Home in solution for configured subscriptions.</t>
+        <t>Clarified support for multiple subscription on a single session. No need to support multiple create-subscription.</t>
+        <t>Added mapping between terminology in yang-push and <xref target="RFC6241"/> (the one followed in this document).</t>
+        <t>Editorial improvements.</t>
+      </list></t>
+    </section>
+  </section>
+
+</back>
+</rfc>
