@@ -2,7 +2,7 @@
   <establish-subscription
       xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
     <stream>NETCONF</stream>
-    <stream-xpath-filter xmlns="urn:ietf:params:xml:ns:ietf-vrrp">
+    <stream-xpath-filter xmlns="urn:ietf:params:xml:ns:yang:ietf-vrrp">
       /vrrp-protocol-error-event[protocol-error-reason="checksum-error"]
     </stream-xpath-filter>
   </establish-subscription>

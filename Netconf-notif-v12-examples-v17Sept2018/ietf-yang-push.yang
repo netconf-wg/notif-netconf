@@ -353,7 +353,7 @@ module ietf-yang-push {
        conditions that can be changed during the lifetime of the
        subscription.";
     choice update-trigger { 
-	  mandatory true;
+	  //mandatory true;
       description
         "Defines necessary conditions for sending an event record to
          the subscriber.";

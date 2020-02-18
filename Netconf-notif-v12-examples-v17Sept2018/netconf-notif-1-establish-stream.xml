@@ -1,10 +1,14 @@
 <rpc message-id="102" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <establish-subscription 
-      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
+      xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications"
+      xmlns:yp="urn:ietf:params:xml:ns:yang:ietf-yang-push">
     <stream>NETCONF</stream>
     <stream-xpath-filter xmlns:ex="http://example.com/events">
       /ex:foo/
     </stream-xpath-filter>
     <dscp>10</dscp>
+    <yp:periodic>
+      <yp:period>500</yp:period>
+    </yp:periodic>
   </establish-subscription>
 </rpc>

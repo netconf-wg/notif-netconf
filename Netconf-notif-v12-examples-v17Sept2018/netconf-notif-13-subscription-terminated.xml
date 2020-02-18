@@ -4,8 +4,8 @@
   <subscription-terminated
     xmlns="urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications">
     <id>39</id>
-    <error-id>
+    <reason>
        suspension-timeout
-    </error-id>
+    </reason>
   </subscription-terminated>
 </notification>
