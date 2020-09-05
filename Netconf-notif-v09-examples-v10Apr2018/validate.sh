@@ -21,8 +21,8 @@ function validate_input_output() {
         -p $YANGMODELS/standard/ietf/DRAFT \
         -f xml \
         -t auto \
-        ietf-subscribed-notifications\@2018-02-23.yang \
-        ietf-yang-push\@2018-03-07.yang \
+        ietf-subscribed-notifications.yang \
+        ietf-yang-push.yang \
         $2 \
         $1 2>&1`
     if [ $? != 0  ]; then
@@ -37,8 +37,8 @@ function validate_edit_config() {
         -p $YANGMODELS/standard/ietf/DRAFT \
         -f xml \
         -t edit \
-        ietf-subscribed-notifications\@2018-02-23.yang \
-        ietf-yang-push\@2018-03-07.yang \
+        ietf-subscribed-notifications.yang \
+        ietf-yang-push.yang \
         $1 2>&1`
     if [ $? != 0  ]; then
         printf "validate_edit_config: Failed $1:\n$err\n\n"
@@ -52,8 +52,8 @@ function validate_notif() {
         -p $YANGMODELS/standard/ietf/DRAFT \
         -f xml \
         -t auto \
-        ietf-subscribed-notifications\@2018-02-23.yang \
-        ietf-yang-push\@2018-03-07.yang \
+        ietf-subscribed-notifications.yang \
+        ietf-yang-push.yang \
         $1 2>&1`
     if [ $? != 0  ]; then
         printf "validate_notif: Failed $1:\n$err\n\n"

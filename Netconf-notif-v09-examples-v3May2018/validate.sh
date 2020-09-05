@@ -15,14 +15,15 @@ YANGMODELS=/opt/git-repos/clean-yang
 # Validate an input and output rpc
 #
 function validate_input_output() {
-    err=`$YANGLINT --verbose \
+    err=`LIBYANG_EXTENSIONS_PLUGINS_DIR=$LIBYANG_EXTENSIONS_PLUGINS_DIR \
+         $YANGLINT --verbose \
         -p . \
         -p $YANGMODELS/standard/ietf/RFC \
         -p $YANGMODELS/standard/ietf/DRAFT \
         -f xml \
         -t auto \
-        ietf-subscribed-notifications\@2018-02-23.yang \
-        ietf-yang-push\@2018-03-07.yang \
+        ietf-subscribed-notifications.yang \
+        ietf-yang-push.yang \
         $2 \
         $1 2>&1`
     if [ $? != 0  ]; then
@@ -31,14 +32,15 @@ function validate_input_output() {
 }
 
 function validate_edit_config() {
-    err=`$YANGLINT --verbose \
+    err=`LIBYANG_EXTENSIONS_PLUGINS_DIR=$LIBYANG_EXTENSIONS_PLUGINS_DIR \
+         $YANGLINT --verbose \
         -p . \
         -p $YANGMODELS/standard/ietf/RFC \
         -p $YANGMODELS/standard/ietf/DRAFT \
         -f xml \
         -t edit \
-        ietf-subscribed-notifications\@2018-02-23.yang \
-        ietf-yang-push\@2018-03-07.yang \
+        ietf-subscribed-notifications.yang \
+        ietf-yang-push.yang \
         $1 2>&1`
     if [ $? != 0  ]; then
         printf "validate_edit_config: Failed $1:\n$err\n\n"
@@ -46,14 +48,15 @@ function validate_edit_config() {
 }
 
 function validate_notif() {
-    err=`$YANGLINT --verbose \
+    err=`LIBYANG_EXTENSIONS_PLUGINS_DIR=$LIBYANG_EXTENSIONS_PLUGINS_DIR \
+         $YANGLINT --verbose \
         -p . \
         -p $YANGMODELS/standard/ietf/RFC \
         -p $YANGMODELS/standard/ietf/DRAFT \
         -f xml \
         -t auto \
-        ietf-subscribed-notifications\@2018-02-23.yang \
-        ietf-yang-push\@2018-03-07.yang \
+        ietf-subscribed-notifications.yang \
+        ietf-yang-push.yang \
         $1 2>&1`
     if [ $? != 0  ]; then
         printf "validate_notif: Failed $1:\n$err\n\n"

@@ -346,9 +346,10 @@ module ietf-subscribed-notifications {
   }
   
   typedef stream-ref {
-    type leafref {
-      path "/sn:streams/sn:stream/sn:name";
-    }
+    type string; // einarnn: temp hack
+    // type leafref {
+    //   path "/sn:streams/sn:stream/sn:name";
+    // }
     description
       "This type is used to reference a system-provided stream.";
   }
@@ -398,7 +399,9 @@ module ietf-subscribed-notifications {
       }
       leaf stream-xpath-filter {
         if-feature "xpath";
-        type yang:xpath1.0;
+        // einarnn: hack for yanglint
+        // type yang:xpath1.0;
+        type string;
         description
           "Event stream evaluation criteria encoded in the syntax of
            an XPath 1.0 expression.
@@ -540,9 +543,11 @@ module ietf-subscribed-notifications {
         description
           "Adds additional objects which can be modified by RPC.";
         leaf stream {
-          type stream-ref {
-            require-instance false;
-          }
+          type stream-ref;
+          // einarnn: hack
+          // type stream-ref {
+          //   require-instance false;
+          // }
           mandatory true;
           description
             "Indicates the event stream to be considered for
@@ -626,7 +631,9 @@ module ietf-subscribed-notifications {
     output {
       leaf identifier {
         type subscription-id;
-        mandatory true;
+        // einarnn: suggest taking this out as it mandates returning
+        // an identifier even when in error
+        // mandatory true;
         description
           "Identifier used for this subscription.";
       }
